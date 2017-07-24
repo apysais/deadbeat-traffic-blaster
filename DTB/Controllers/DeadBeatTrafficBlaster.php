@@ -34,7 +34,12 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 	}
 	
 	public function dbtb_main(){
-		echo 'here';
+		global $wpdb;
+		$data = array();
+		$data['heading'] = 'DeadBeat Traffic Blaster';
+		$data['method'] = '';
+		$data['action'] = 'admin.php?page=' . DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug();
+		DTB_View::get_instance()->admin_partials('partials/deadbeat-traffic-blaster-admin-display.php', $data);
 	}
 	
 	/**

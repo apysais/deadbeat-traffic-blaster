@@ -83,6 +83,9 @@ function dbtb_get_text_domain(){
 	$ret = dbtb_get_plugin_details();
 	return $ret['TextDomain'];
 }
+function dbtb_get_plugin_dir(){
+	return plugin_dir_path( __FILE__ );
+}
 /**
  * Begins execution of the plugin.
  *

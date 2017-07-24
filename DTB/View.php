@@ -71,7 +71,7 @@ class DTB_View{
 	 * @return path / string
 	 * */
 	public function get_view_folder(){
-		return mwp_plugin_dir_path();
+		return dbtb_get_plugin_dir();
 	}
 
 	/**
@@ -93,6 +93,28 @@ class DTB_View{
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * check and get template/file in plugin
+	 *
+	 * this check if the current template file is in the plugin
+	 * this is primarily use for getting template file inside plugin only
+	 * for backend view purposes
+	 *
+	 * @since 3.12
+	 * @access public
+	 * @param		string		$template_file
+	 * @return string | bool, if the file exists return the directory path, else false
+	 * */
+	public function get_in_plugin($template_file){
+		$template = $this->get_view_folder() . $template_file;
+		if( file_exists($template) ){
+			//check in plugin
+			return $template;
+		}else{
+			return false;
+		}
 	}
 
 	/**
@@ -130,8 +152,8 @@ class DTB_View{
 	 * @return string | bool, if the file exists return the directory path, else false
 	 * */
 	public function admin_part_partials($template_file){
-		$template = 'partials/admin/' . $template_file;
-		$template_admin = $this->get_in_theme($template);
+		$template = 'admin/' . $template_file;
+		$template_admin = $this->get_in_plugin($template);
 		if( file_exists($template_admin) ){
 			return $template_admin;
 		}else{
@@ -152,9 +174,9 @@ class DTB_View{
 	 * @return string | bool, if the file exists return the directory path, else false
 	 * */
 	public function public_part_partials($template_file){
-		$template = 'partials/' . $template_file;
+		$template = 'public/' . $template_file;
 
-		$template_admin = $this->get_in_theme($template);
+		$template_admin = $this->get_in_plugin($template);
 		if( file_exists($template_admin) ){
 			return $template_admin;
 		}else{
