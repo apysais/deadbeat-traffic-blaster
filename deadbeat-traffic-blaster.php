@@ -50,6 +50,7 @@ function dbtb_autoload_class($class_name){
 function activate_deadbeat_traffic_blaster() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-deadbeat-traffic-blaster-activator.php';
 	Deadbeat_Traffic_Blaster_Activator::activate();
+	new DTB_Admin_DeadBeatTrafficBlasterDB;
 }
 
 /**
@@ -101,6 +102,7 @@ function run_deadbeat_traffic_blaster() {
 	$plugin->run();
 	
 	new DTB_Admin_DeadBeatTrafficBlaster;
+	
 }
 add_action('plugins_loaded', 'run_deadbeat_traffic_blaster');
 

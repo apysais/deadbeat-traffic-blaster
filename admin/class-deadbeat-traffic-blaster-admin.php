@@ -74,6 +74,7 @@ class Deadbeat_Traffic_Blaster_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/deadbeat-traffic-blaster-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style($this->plugin_name . '-admin-ui-css','http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css',false,"1.9.0",false);
 
 	}
 
@@ -97,7 +98,8 @@ class Deadbeat_Traffic_Blaster_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/deadbeat-traffic-blaster-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script('jquery-ui-core');// enqueue jQuery UI Core
+		wp_enqueue_script('jquery-ui-tabs');// enqueue jQuery UI Tabs
 	}
 
 }
