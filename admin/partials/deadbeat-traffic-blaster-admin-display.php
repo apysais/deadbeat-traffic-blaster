@@ -19,7 +19,8 @@
 			<li><a href="#tab-3"><span>Third Tab</span></a></li>
 		</ul>
 		<div id="tab-1">
-		  <p> your first tab content goes here  
+		  <p> your first tab content goes here  </p>
+		  <a href="<?php echo $action_add_facebook;?>">Add Facebook</a>
 		</div>
 		<div id="tab-2">
 			<p> your second tab content goes here  

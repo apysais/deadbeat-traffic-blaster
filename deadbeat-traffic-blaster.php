@@ -100,7 +100,8 @@ function run_deadbeat_traffic_blaster() {
 
 	$plugin = new Deadbeat_Traffic_Blaster();
 	$plugin->run();
-	
+	//facebook
+	require_once plugin_dir_path( __FILE__ ) . 'api/Facebook/autoload.php';
 	new DTB_Admin_DeadBeatTrafficBlaster;
 	
 }

@@ -2,7 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-
 class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 	protected static $instance = null;
 	protected $setting_db_entity = null;
@@ -36,10 +35,33 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 	public function dbtb_main(){
 		global $wpdb;
 		$data = array();
+		$menu_slug = DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug();
 		$data['heading'] = 'DeadBeat Traffic Blaster';
 		$data['method'] = '';
-		$data['action'] = 'admin.php?page=' . DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug();
+		$data['action'] = 'admin.php?page=' . $menu_slug;
+		$data['action_add_facebook'] = 'admin.php?page=' . $menu_slug . '&_method=add-facebook';
 		DTB_View::get_instance()->admin_partials('partials/deadbeat-traffic-blaster-admin-display.php', $data);
+	}
+	
+	public function add_facebook(){
+		$app_id = '1210726989041567';
+		$app_secret = 'f02ad8e69538fb2291da6adcfbc18769';
+
+		$fb = new Facebook\Facebook([
+		  'app_id' => $app_id, // Replace {app-id} with your app id
+		  'app_secret' => $app_secret,
+		  'default_graph_version' => 'v2.8',
+		  ]);
+
+		$helper = $fb->getRedirectLoginHelper();
+
+		$permissions = ['email']; // Optional permissions
+		$loginUrl = $helper->getLoginUrl('http://test.dev/wp/wp-admin/admin.php?page=dbtb-main&_method=fallback-facebook', $permissions);
+
+		echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+	}
+	
+	public function fallback_facebook(){
 	}
 	
 	/**
