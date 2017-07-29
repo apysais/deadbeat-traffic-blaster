@@ -40,9 +40,10 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 		$data['method'] = '';
 		$data['action'] = 'admin.php?page=' . $menu_slug;
 		$data['action_add_facebook'] = 'admin.php?page=' . $menu_slug . '&_method=add-facebook';
+		//$data['all_social_media'] = DTB_Admin_AccountDB::get_instance()->get();
 		DTB_View::get_instance()->admin_partials('partials/deadbeat-traffic-blaster-admin-display.php', $data);
 	}
-	
+	//move this to FB Controller
 	public function add_facebook(){
 		$app_id = '1210726989041567';
 		$app_secret = 'f02ad8e69538fb2291da6adcfbc18769';
@@ -62,8 +63,9 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 	}
 	
 	public function fallback_facebook(){
+		
 	}
-	
+	//move this to FB Controller
 	/**
 	 * Controller
 	 *
