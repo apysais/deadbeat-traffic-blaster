@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-class DTB_Admin_AccountDB {
+class DTB_Admin_LogDB {
 	protected static $instance = null;
 	protected $_wpdb;
 	protected $table_name;
@@ -74,7 +74,7 @@ class DTB_Admin_AccountDB {
 	
 	public function __construct(){
 		global $wpdb;
-		$this->table_name = $wpdb->prefix . 'tb_accounts';
+		$this->table_name = $wpdb->prefix . 'tb_log';
 		$this->_wpdb = $wpdb;
 	}
 }

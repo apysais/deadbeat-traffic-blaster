@@ -43,29 +43,7 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 		//$data['all_social_media'] = DTB_Admin_AccountDB::get_instance()->get();
 		DTB_View::get_instance()->admin_partials('partials/deadbeat-traffic-blaster-admin-display.php', $data);
 	}
-	//move this to FB Controller
-	public function add_facebook(){
-		$app_id = '1210726989041567';
-		$app_secret = 'f02ad8e69538fb2291da6adcfbc18769';
 
-		$fb = new Facebook\Facebook([
-		  'app_id' => $app_id, // Replace {app-id} with your app id
-		  'app_secret' => $app_secret,
-		  'default_graph_version' => 'v2.8',
-		  ]);
-
-		$helper = $fb->getRedirectLoginHelper();
-
-		$permissions = ['email']; // Optional permissions
-		$loginUrl = $helper->getLoginUrl('http://test.dev/wp/wp-admin/admin.php?page=dbtb-main&_method=fallback-facebook', $permissions);
-
-		echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
-	}
-	
-	public function fallback_facebook(){
-		
-	}
-	//move this to FB Controller
 	/**
 	 * Controller
 	 *
