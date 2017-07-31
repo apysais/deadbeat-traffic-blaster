@@ -43,20 +43,26 @@ class DTB_API_Facebook {
 		$helper = $fb->getRedirectLoginHelper();
 
 		$permissions = ['email']; // Optional permissions
-		$loginUrl = $helper->getLoginUrl('http://test.dev/wp/wp-admin/admin.php?page=dbtb-main&_method=fallback-facebook', $permissions);
+		$url = admin_url('admin.php?page=dbtb-facebook&_method=fallback');
+		$loginUrl = $helper->getLoginUrl($url, $permissions);
 
 		echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
 	}
 	
 	public function fallback(){
+		//session_start();
+		$app_id = '1210726989041567';
+		$app_secret = 'f02ad8e69538fb2291da6adcfbc18769';
 		$fb = new Facebook\Facebook([
-		  'app_id' => '{app-id}', // Replace {app-id} with your app id
-		  'app_secret' => '{app-secret}',
-		  'default_graph_version' => 'v2.2',
-		  ]);
+			'app_id' => $app_id, // Replace {app-id} with your app id
+			'app_secret' => $app_secret,
+			'default_graph_version' => 'v2.8',
+		]);
 
 		$helper = $fb->getRedirectLoginHelper();
-
+		if (isset($_GET['state'])) {
+			$helper->getPersistentDataHandler()->set('state', $_GET['state']);
+		}
 		try {
 		  $accessToken = $helper->getAccessToken();
 		} catch(Facebook\Exceptions\FacebookResponseException $e) {
@@ -96,7 +102,7 @@ class DTB_API_Facebook {
 		var_dump($tokenMetadata);
 
 		// Validation (these will throw FacebookSDKException's when they fail)
-		$tokenMetadata->validateAppId({app-id}); // Replace {app-id} with your app id
+		$tokenMetadata->validateAppId($app_id); // Replace {app-id} with your app id
 		// If you know the user ID this access token belongs to, you can validate it here
 		//$tokenMetadata->validateUserId('123');
 		$tokenMetadata->validateExpiration();
@@ -114,8 +120,9 @@ class DTB_API_Facebook {
 		  var_dump($accessToken->getValue());
 		}
 
-		$_SESSION['fb_access_token'] = (string) $accessToken;
-
+		//$_SESSION['fb_access_token'] = (string) $accessToken;
+		$fb_access_token = (string) $accessToken;
+		echo $fb_access_token;
 		// User is logged in with a long-lived access token.
 		// You can redirect them to a members-only page.
 		//header('Location: https://example.com/members.php');

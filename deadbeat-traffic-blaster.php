@@ -103,5 +103,12 @@ function run_deadbeat_traffic_blaster() {
 	//facebook
 	require_once plugin_dir_path( __FILE__ ) . 'api/Facebook/autoload.php';
 	new DTB_Admin_DeadBeatTrafficBlaster;
+	new DTB_Admin_Facebook;
 }
 add_action('plugins_loaded', 'run_deadbeat_traffic_blaster');
+/*add_action('init', function() {
+    session_start();
+    if ( isset( $_GET['state'] ) ) {
+        $_SESSION['FBRLH_state']=$_GET['state'];
+    }
+});*/

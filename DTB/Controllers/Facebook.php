@@ -2,9 +2,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
+class DTB_Controllers_Facebook extends DTB_Base{
 	protected static $instance = null;
-	protected $deadbeat_menu_slug = null;
+	protected $fb_menu_slug = null;
 	/**
 	 * Return an instance of this class.
 	 *
@@ -31,18 +31,23 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 		return self::$instance;
 	}
 	
-	public function dbtb_main(){
-		global $wpdb;
+	public function dbtb_facebook(){
 		$data = array();
-		$menu_slug = $this->deadbeat_menu_slug;
-		$data['heading'] = 'DeadBeat Traffic Blaster';
-		$data['method'] = '';
+		$menu_slug = $this->fb_menu_slug;
+		$data['method'] = 'create_facebook_api';
 		$data['action'] = 'admin.php?page=' . $menu_slug;
-		$data['action_add_facebook'] = 'admin.php?page=' . $menu_slug . '&_method=add-facebook';
-		//$data['all_social_media'] = DTB_Admin_AccountDB::get_instance()->get();
-		DTB_View::get_instance()->admin_partials('partials/deadbeat-traffic-blaster-admin-display.php', $data);
+		DTB_View::get_instance()->admin_partials('partials/fb/fb-create.php', $data);
 	}
-
+	
+	public function create_facebook_api(){
+		print_r($_POST);
+		DTB_API_Facebook::get_instance()->login(1,2);
+	}
+	
+	public function fallback(){
+		DTB_API_Facebook::get_instance()->fallback();
+	}
+	
 	/**
 	 * Controller
 	 *
@@ -56,6 +61,6 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 	}
 	
 	public function __construct(){
-		$this->deadbeat_menu_slug = DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug();
+		$this->fb_menu_slug = DTB_Admin_Facebook::get_instance()->menu_slug();
 	}
 }

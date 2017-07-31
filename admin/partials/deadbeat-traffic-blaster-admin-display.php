@@ -12,10 +12,6 @@
 		<p class="lead-description">Welcome to Deadbeat Traffic Blaster. You can edit your social media accounts below. Once you have configured at least one account, you can begin syndicating content via individual Posts and Pages, or you can post directly to any of your accounts via Syndicate Now</p>
 	
 	</div>
-	<div>
-		<h3>Create New Account : </h3>
-		<p><a href="<?php echo $action_add_facebook;?>">Add Facebook</a></p>
-	</div>
 	<div class="feature-section two-col">
 		<div class="col">
 			<h3>Title</h3>
