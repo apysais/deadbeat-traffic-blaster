@@ -14,7 +14,15 @@
 	</div>
 	<div class="feature-section two-col">
 		<div class="col">
-			<h3>Title</h3>
+			<h3>Facebook</h3>
+			<pre>
+			<?php print_r($fb_api);?>
+			<?php if( !empty($fb_api) ){ ?>
+				<?php foreach($fb_api as $k => $v) { ?>
+						<p>Settings : <?php print_r(unserialize($v->settings));?></p>
+				<?php } ?>
+			<?php } ?>
+			</pre>
 		</div>
 		<div class="col">
 			<h3>Title</h3>

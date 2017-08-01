@@ -31,9 +31,11 @@ class DTB_API_Facebook {
 	}
 	
 	public function login($app_id, $app_secret){
-		$app_id = '1210726989041567';
-		$app_secret = 'f02ad8e69538fb2291da6adcfbc18769';
-
+		//$app_id = '1210726989041567';
+		//$app_secret = 'f02ad8e69538fb2291da6adcfbc18769';
+		$_SESSION['app_id'] = $app_id;
+		$_SESSION['app_secret'] = $app_secret;
+		
 		$fb = new Facebook\Facebook([
 		  'app_id' => $app_id, // Replace {app-id} with your app id
 		  'app_secret' => $app_secret,
@@ -42,17 +44,31 @@ class DTB_API_Facebook {
 
 		$helper = $fb->getRedirectLoginHelper();
 
-		$permissions = ['email']; // Optional permissions
+		$permissions = ['email', 'manage_pages', 'publish_pages']; // Optional permissions
 		$url = admin_url('admin.php?page=dbtb-facebook&_method=fallback');
 		$loginUrl = $helper->getLoginUrl($url, $permissions);
-
-		echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+		
+		echo '<a href="' . htmlspecialchars($loginUrl) . '&app_id='.$app_id.'&app_secret='.$app_secret.'">Log in with Facebook!</a>';
 	}
 	
 	public function fallback(){
-		//session_start();
-		$app_id = '1210726989041567';
-		$app_secret = 'f02ad8e69538fb2291da6adcfbc18769';
+		$msg = array(
+			'error' => array(),
+			'success' => array()
+		);
+		$app_id = '';
+		if( isset($_SESSION['app_id']) 
+			&& trim($_SESSION['app_id']) != ''
+		){
+			$app_id = $_SESSION['app_id'];
+		}
+		$app_secret = '';
+		if( isset($_SESSION['app_secret']) 
+			&& trim($_SESSION['app_secret']) != ''
+		){
+			$app_secret = $_SESSION['app_secret'];
+		}
+		
 		$fb = new Facebook\Facebook([
 			'app_id' => $app_id, // Replace {app-id} with your app id
 			'app_secret' => $app_secret,
@@ -67,39 +83,46 @@ class DTB_API_Facebook {
 		  $accessToken = $helper->getAccessToken();
 		} catch(Facebook\Exceptions\FacebookResponseException $e) {
 		  // When Graph returns an error
-		  echo 'Graph returned an error: ' . $e->getMessage();
-		  exit;
+		  $msg['error'][] = 'Graph returned an error: ' . $e->getMessage();
+		  return $msg;
 		} catch(Facebook\Exceptions\FacebookSDKException $e) {
 		  // When validation fails or other local issues
-		  echo 'Facebook SDK returned an error: ' . $e->getMessage();
-		  exit;
+		  $msg['error'][] = 'Facebook SDK returned an error: ' . $e->getMessage();
+		  return $msg;
 		}
 
 		if (! isset($accessToken)) {
 		  if ($helper->getError()) {
-			header('HTTP/1.0 401 Unauthorized');
+			/*header('HTTP/1.0 401 Unauthorized');
 			echo "Error: " . $helper->getError() . "\n";
 			echo "Error Code: " . $helper->getErrorCode() . "\n";
 			echo "Error Reason: " . $helper->getErrorReason() . "\n";
-			echo "Error Description: " . $helper->getErrorDescription() . "\n";
+			echo "Error Description: " . $helper->getErrorDescription() . "\n";*/
+			$msg['error'] = array(
+				"Error: " . $helper->getError(),
+				"Error Code: " . $helper->getErrorCode(),
+				"Error Reason: " . $helper->getErrorReason(),
+				"Error Description: " . $helper->getErrorDescription()
+			);
 		  } else {
-			header('HTTP/1.0 400 Bad Request');
-			echo 'Bad request';
+			//header('HTTP/1.0 400 Bad Request');
+			$msg['error'][] = 'Bad request';
 		  }
-		  exit;
+		  return $msg;
 		}
-
+		
+		
+		
 		// Logged in
-		echo '<h3>Access Token</h3>';
-		var_dump($accessToken->getValue());
+		$msg['success']['accessTokenLogged'] = $accessToken->getValue();
+		//var_dump($accessToken->getValue());
 
 		// The OAuth 2.0 client handler helps us manage access tokens
 		$oAuth2Client = $fb->getOAuth2Client();
 
 		// Get the access token metadata from /debug_token
 		$tokenMetadata = $oAuth2Client->debugToken($accessToken);
-		echo '<h3>Metadata</h3>';
-		var_dump($tokenMetadata);
+		$msg['success']['tokenMetadata'] = $tokenMetadata;
 
 		// Validation (these will throw FacebookSDKException's when they fail)
 		$tokenMetadata->validateAppId($app_id); // Replace {app-id} with your app id
@@ -112,20 +135,17 @@ class DTB_API_Facebook {
 		  try {
 			$accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 		  } catch (Facebook\Exceptions\FacebookSDKException $e) {
-			echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
-			exit;
+			$msg['error'][] = "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
+			return $msg;
 		  }
 
-		  echo '<h3>Long-lived</h3>';
-		  var_dump($accessToken->getValue());
+		  //echo '<h3>Long-lived</h3>';
+		  $msg['success']['accessTokenLongLived'] = $accessToken->getValue();
 		}
 
-		//$_SESSION['fb_access_token'] = (string) $accessToken;
 		$fb_access_token = (string) $accessToken;
-		echo $fb_access_token;
-		// User is logged in with a long-lived access token.
-		// You can redirect them to a members-only page.
-		//header('Location: https://example.com/members.php');
+		$msg['success']['fb_access_token'] = $fb_access_token;
+		return $msg;
 	}
 	
 	public function __construct(){}

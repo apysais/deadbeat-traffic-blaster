@@ -45,10 +45,17 @@ class DTB_Admin_AccountDB {
 		return $query;
 	}
 	
-	public function store($data = array()){
+	public function get_by_service($service){
+		$table_name = $this->table_name;
+		$str = "SELECT * FROM $table_name WHERE service = '{$service}'";
+		$query = $this->_wpdb->get_results($str);
+		return $query;
+	}
+	
+	public function store($data = array(), $format_array = array()){
 		//$wpdb->insert( $table, $data, $format );
 		if( !empty($data) ){
-			return $this->_wpdb->insert($this->table_name, $data);
+			return $this->_wpdb->insert($this->table_name, $data, $format_array);
 		}else{
 			return false;
 		}

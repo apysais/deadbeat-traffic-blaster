@@ -106,9 +106,16 @@ function run_deadbeat_traffic_blaster() {
 	new DTB_Admin_Facebook;
 }
 add_action('plugins_loaded', 'run_deadbeat_traffic_blaster');
-/*add_action('init', function() {
-    session_start();
-    if ( isset( $_GET['state'] ) ) {
-        $_SESSION['FBRLH_state']=$_GET['state'];
+function dbtb_redirect($url){
+    $string = '<script type="text/javascript">';
+    $string .= 'window.location = "' . $url . '"';
+    $string .= '</script>';
+    echo $string;
+}
+add_action('init', 'myStartSession', 1);
+function myStartSession() {
+    if(!session_id()) {
+        session_start();
     }
-});*/
+}
+

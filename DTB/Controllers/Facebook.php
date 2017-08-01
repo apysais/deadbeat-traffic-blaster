@@ -40,12 +40,55 @@ class DTB_Controllers_Facebook extends DTB_Base{
 	}
 	
 	public function create_facebook_api(){
-		print_r($_POST);
-		DTB_API_Facebook::get_instance()->login(1,2);
+		$app_id = '';
+		if( isset($_POST['app_id']) 
+			&& trim($_POST['app_id']) != ''
+		){
+			$app_id = $_POST['app_id'];
+		}
+		$app_secret = '';
+		if( isset($_POST['app_secret']) 
+			&& trim($_POST['app_secret']) != ''
+		){
+			$app_secret = $_POST['app_secret'];
+		}
+		$_SESSION['facebook_name'] = $_POST['name'];
+		DTB_API_Facebook::get_instance()->login($app_id, $app_secret);
 	}
 	
 	public function fallback(){
-		DTB_API_Facebook::get_instance()->fallback();
+		$ret = DTB_API_Facebook::get_instance()->fallback();
+
+		if( !empty($ret['error']) ){
+			print_r($ret['error']);
+		}else{
+			$settings_array = array(
+				'api_id' => $_SESSION['app_id'],
+				'api_secret' => $_SESSION['app_secret'],
+				'fb_access_token' => $ret['success']['fb_access_token'],
+				'accessTokenLogged' => $ret['success']['accessTokenLogged'],
+				'tokenMetadata' => $ret['success']['tokenMetadata']
+			);
+			$data = array(
+				'service' => 'facebook',
+				'name' => $_SESSION['facebook_name'],
+				'settings' => serialize($settings_array),
+			);
+			$format_array = array(
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+			);
+			$id = DTB_Admin_AccountDB::get_instance()->store($data, $format_array);
+			
+			unset($_SESSION['facebook_name']);
+			unset($_SESSION['app_id']);
+			unset($_SESSION['app_secret']);
+			dbtb_redirect('admin.php?page=' . DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug());
+			exit();
+		}
 	}
 	
 	/**
