@@ -53,6 +53,11 @@ class DTB_Admin_Facebook {
 		);
 	}
 	
+	public function get_credentials($account_id){
+		$cred = DTB_Admin_AccountDB::get_instance()->get_by_service_id($account_id, 'facebook');
+		return unserialize($cred->settings);
+	}
+	
 	public function init_hook(){
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'add_admin_submenu' ) );

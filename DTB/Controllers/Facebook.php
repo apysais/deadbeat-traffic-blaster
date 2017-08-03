@@ -63,8 +63,8 @@ class DTB_Controllers_Facebook extends DTB_Base{
 			print_r($ret['error']);
 		}else{
 			$settings_array = array(
-				'api_id' => $_SESSION['app_id'],
-				'api_secret' => $_SESSION['app_secret'],
+				'app_id' => $_SESSION['app_id'],
+				'app_secret' => $_SESSION['app_secret'],
 				'fb_access_token' => $ret['success']['fb_access_token'],
 				'accessTokenLogged' => $ret['success']['accessTokenLogged'],
 				'tokenMetadata' => $ret['success']['tokenMetadata']
@@ -89,6 +89,30 @@ class DTB_Controllers_Facebook extends DTB_Base{
 			dbtb_redirect('admin.php?page=' . DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug());
 			exit();
 		}
+	}
+	
+	public function fb_me($account_id){
+		$cred = DTB_Admin_Facebook::get_instance()->get_credentials(18);
+		print_r($cred);
+		$fb = new Facebook\Facebook([
+		  'app_id' => $cred['app_id'],
+		  'app_secret' => $cred['app_secret'],
+		  'default_graph_version' => 'v2.2',
+		  ]);
+
+		try {
+		  // Returns a `Facebook\FacebookResponse` object
+		  $response = $fb->get('/me?fields=id,name', $cred['fb_access_token']);
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
+		  echo 'Graph returned an error: ' . $e->getMessage();
+		  exit;
+		} catch(Facebook\Exceptions\FacebookSDKException $e) {
+		  echo 'Facebook SDK returned an error: ' . $e->getMessage();
+		  exit;
+		}
+
+		$user = $response->getGraphUser();
+		//print_r($user['id']);
 	}
 	
 	/**

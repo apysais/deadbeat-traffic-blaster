@@ -15,14 +15,20 @@
 	<div class="feature-section two-col">
 		<div class="col">
 			<h3>Facebook</h3>
-			<pre>
-			<?php print_r($fb_api);?>
+			<?php //print_r($fb_api);?>
 			<?php if( !empty($fb_api) ){ ?>
 				<?php foreach($fb_api as $k => $v) { ?>
-						<p>Settings : <?php print_r(unserialize($v->settings));?></p>
+						<form>
+							<input type="hidden" name="id" value="<?php echo $v->id;?>">
+							<?php $settings = unserialize($v->settings);?>
+							<p>Name : <input type="text" name="name" value="<?php echo $v->name;?>" style="width:100%;"></p>
+							<p>App ID : <input type="text" name="name" value="<?php echo $settings['app_id'];?>" style="width:100%;"></p>
+							<p>App Secret : <input type="text" name="name" value="<?php echo $settings['app_secret'];?>" style="width:100%;"></p>
+							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Re Authenticate">  <input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
+						</form>
+						<hr>
 				<?php } ?>
 			<?php } ?>
-			</pre>
 		</div>
 		<div class="col">
 			<h3>Title</h3>

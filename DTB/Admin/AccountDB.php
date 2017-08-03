@@ -37,7 +37,7 @@ class DTB_Admin_AccountDB {
 		
 		if( !is_null($id) ){
 			$str = "SELECT * FROM $table_name WHERE account_id = $id";
-			$query = $this->_wpdb->get_results($str);
+			$query = $this->_wpdb->get_row($str);
 		}else{
 			$query = $this->_wpdb->get_results( "SELECT * FROM $table_name" );
 		}
@@ -49,6 +49,14 @@ class DTB_Admin_AccountDB {
 		$table_name = $this->table_name;
 		$str = "SELECT * FROM $table_name WHERE service = '{$service}'";
 		$query = $this->_wpdb->get_results($str);
+		return $query;
+	}
+
+	public function get_by_service_id($id, $service){
+		$table_name = $this->table_name;
+		$str = "SELECT * FROM $table_name WHERE account_id = $id AND service = '{$service}'";
+		echo $str;
+		$query = $this->_wpdb->get_row($str);
 		return $query;
 	}
 	
