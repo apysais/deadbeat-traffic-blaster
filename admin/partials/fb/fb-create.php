@@ -1,5 +1,4 @@
 <div id="dbtb-wrapper" class="about-wrap wrap">
-	<h1>Add Facebook</h1>
 	<div>
 		<h3>Create New Facebook Account : </h3>
 	</div>

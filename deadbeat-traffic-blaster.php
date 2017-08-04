@@ -104,6 +104,9 @@ function run_deadbeat_traffic_blaster() {
 	require_once plugin_dir_path( __FILE__ ) . 'api/Facebook/autoload.php';
 	new DTB_Admin_DeadBeatTrafficBlaster;
 	new DTB_Admin_Facebook;
+	require_once plugin_dir_path( __FILE__ ) . 'api/Twitter/autoload.php';
+	new DTB_Admin_Twitter;
+	new DTB_API_Twitter;
 }
 add_action('plugins_loaded', 'run_deadbeat_traffic_blaster');
 function dbtb_redirect($url){

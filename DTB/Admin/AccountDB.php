@@ -55,7 +55,7 @@ class DTB_Admin_AccountDB {
 	public function get_by_service_id($id, $service){
 		$table_name = $this->table_name;
 		$str = "SELECT * FROM $table_name WHERE account_id = $id AND service = '{$service}'";
-		echo $str;
+
 		$query = $this->_wpdb->get_row($str);
 		return $query;
 	}
