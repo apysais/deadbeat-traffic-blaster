@@ -40,6 +40,8 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 		$data['action'] = 'admin.php?page=' . $menu_slug;
 		$data['action_add_facebook'] = 'admin.php?page=' . $menu_slug . '&_method=add-facebook';
 		$data['fb_api'] = DTB_Admin_AccountDB::get_instance()->get_by_service('facebook');
+		$data['twitter_api'] = DTB_Admin_AccountDB::get_instance()->get_by_service('twitter');
+		$data['wp_api'] = DTB_Admin_AccountDB::get_instance()->get_by_service('wordpress');
 		DTB_View::get_instance()->admin_partials('partials/deadbeat-traffic-blaster-admin-display.php', $data);
 	}
 

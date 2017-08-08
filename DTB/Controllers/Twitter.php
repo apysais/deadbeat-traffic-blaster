@@ -79,8 +79,6 @@ class DTB_Controllers_Twitter extends DTB_Base{
 			'%s',
 			'%s',
 			'%s',
-			'%s',
-			'%s',
 		);
 		$id = DTB_Admin_AccountDB::get_instance()->store($data, $format_array);
 		dbtb_redirect('admin.php?page=' . DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug());

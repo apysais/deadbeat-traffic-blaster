@@ -78,8 +78,6 @@ class DTB_Controllers_Facebook extends DTB_Base{
 				'%s',
 				'%s',
 				'%s',
-				'%s',
-				'%s',
 			);
 			$id = DTB_Admin_AccountDB::get_instance()->store($data, $format_array);
 			
