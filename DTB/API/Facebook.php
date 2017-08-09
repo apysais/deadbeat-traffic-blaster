@@ -148,6 +148,81 @@ class DTB_API_Facebook {
 		return $msg;
 	}
 	
+	public function me($app_id, $app_secret, $access_token){
+		$fb = new Facebook\Facebook([
+		  'app_id' => $app_id,
+		  'app_secret' => $app_secret,
+		  'default_graph_version' => 'v2.2',
+		  ]);
+
+		try {
+		  // Returns a `Facebook\FacebookResponse` object
+		  $response = $fb->get('/me?fields=id,name', $access_token);
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
+		  echo 'Graph returned an error: ' . $e->getMessage();
+		  exit;
+		} catch(Facebook\Exceptions\FacebookSDKException $e) {
+		  echo 'Facebook SDK returned an error: ' . $e->getMessage();
+		  exit;
+		}
+
+		return $response->getGraphUser();
+	}
+	
+	public function me_account($app_id, $app_secret, $access_token){
+		$fb = new Facebook\Facebook([
+		  'app_id' => $app_id,
+		  'app_secret' => $app_secret,
+		  'default_graph_version' => 'v2.2',
+		  ]);
+
+		try {
+		  // Returns a `Facebook\FacebookResponse` object
+		  $response = $fb->get('/me?fields=accounts', $access_token);
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
+		  echo 'Graph returned an error: ' . $e->getMessage();
+		  exit;
+		} catch(Facebook\Exceptions\FacebookSDKException $e) {
+		  echo 'Facebook SDK returned an error: ' . $e->getMessage();
+		  exit;
+		}
+
+		return $response;
+	}
+
+	public function publish_account($fb_page_id, $app_id, $app_secret, $access_token){
+		$fb = new Facebook\Facebook([
+		  'app_id' => $app_id,
+		  'app_secret' => $app_secret,
+		  'default_graph_version' => 'v2.2',
+		  ]);
+		$access_token = 'EAARNJlgaD58BALEZAF9HH56tW3tJ8rGy7iiwQ5DrCHTp0RDIBpbH6lZAvFNLjUxogrD6P6k78s19yhda0Qrikw0mPsE1sN34dGTXhYAfB6jnouM1DRyN2LFCZCuzGs1Xzb1p37jXV5Ih7m4t1WI8w2l452gVqfrQeMVuvImBsomZC4mDcicV';
+		$request = $fb->request('POST',
+			'/'.$fb_page_id.'/feed', 
+			['message' => 'This is a test message 123'], 
+			$access_token
+		);
+
+		// Send the request to Graph
+		try {
+		  $response = $fb->getClient()->sendRequest($request);
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
+		  // When Graph returns an error
+		  echo 'Graph returned an error: ' . $e->getMessage();
+		  exit;
+		} catch(Facebook\Exceptions\FacebookSDKException $e) {
+		  // When validation fails or other local issues
+		  echo 'Facebook SDK returned an error: ' . $e->getMessage();
+		  exit;
+		}
+
+		$graphNode = $response->getGraphNode();
+		return $graphNode;
+	}
+	
+	public function get_access_token($page_id){
+	}
+	
 	public function __construct(){}
 }
 
