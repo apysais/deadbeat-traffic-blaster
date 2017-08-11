@@ -70,6 +70,22 @@
 		</div>
 		<div class="col">
 			<h3>Tumblr</h3>
+			<?php if( !empty($tumblr_api) ){ ?>
+				<?php foreach($tumblr_api as $k => $v) { ?>
+						<form>
+							<input type="hidden" name="id" value="<?php echo $v->id;?>">
+							<?php $settings = unserialize($v->settings);?>
+							<p>Name : <input type="text" name="name" value="<?php echo $v->name;?>" style="width:100%;"></p>
+							<p>Blog URL : <input type="text" name="name" value="<?php echo $settings['blog_id'];?>" style="width:100%;"></p>
+							<p>Consumer Key : <input type="text" name="name" value="<?php echo $settings['consumer_key'];?>" style="width:100%;"></p>
+							<p>Consumer Secret : <input type="text" name="name" value="<?php echo $settings['consumer_secret'];?>" style="width:100%;"></p>
+							<p>Access Token : <input type="text" name="name" value="<?php echo $settings['access_token'];?>" style="width:100%;"></p>
+							<p>Access Token Secret : <input type="text" name="name" value="<?php echo $settings['access_token_secret'];?>" style="width:100%;"></p>
+							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Re Authenticate">  <input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
+						</form>
+						<hr>
+				<?php } ?>
+			<?php } ?>
 		</div>
 	</div>
 </div>

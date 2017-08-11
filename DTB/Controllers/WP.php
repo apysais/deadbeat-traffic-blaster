@@ -31,8 +31,14 @@ class DTB_Controllers_WP extends DTB_Base{
 		return self::$instance;
 	}
 	
-	public function wp_redirect_url(){
-		
+	public function post_status(){
+		$cred = DTB_Admin_WP::get_instance()->get_credentials(22);
+		$content = array(
+			'title' => 'Hello World',
+			'content' => 'Hello. I am a test post. I was created by the API',
+		);
+		$ret = DTB_API_WP::get_instance()->post_status($cred, $content);
+		print_r($ret);
 	}
 	
 	public function create_wp_api(){

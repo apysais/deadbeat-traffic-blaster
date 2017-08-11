@@ -37,6 +37,12 @@ class DTB_API_Twitter {
 		return $connection->get("account/verify_credentials");
 	}
 	
+	public function post_status($creds = array(), $status){
+		$connection = new TwitterOAuth($creds['consumer_key'], $creds['consumer_secret'], $creds['access_token'], $creds['access_token_secret']);
+		$statues = $connection->post("statuses/update", ["status" => $status]);
+		return $statues;
+	}
+	
 	public function __construct(){}
 }
 

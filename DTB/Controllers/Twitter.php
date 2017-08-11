@@ -92,6 +92,12 @@ class DTB_Controllers_Twitter extends DTB_Base{
 		print_r($account);
 	}
 	
+	public function post_status(){
+		$cred = DTB_Admin_Twitter::get_instance()->get_credentials(19);
+		$status = 'hello world';
+		DTB_API_Twitter::get_instance()->post_status($cred, $status);
+	}
+	
 	/**
 	 * Controller
 	 *

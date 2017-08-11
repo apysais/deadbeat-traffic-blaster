@@ -33,30 +33,18 @@ class DTB_API_Tumblr {
 	}
 	
 	public function oauth_info($creds = array()){
-		//https://public-api.wordpress.com/oauth2/authorize?client_id=your_client_id&redirect_uri=your_url&response_type=code&blog=1234
-		$blog_id = $creds['blog_id'];
-		$consumer_key = $creds['oauth_consumer_key'];
-		$url = $this->url . $blog_id . '/info?api_key=' . $consumer_key;
-		$response = wp_remote_get($url);
-		if ( is_array( $response ) ) {
-			$header = $response['headers']; // array of http header lines
-			//echo $response['body']; // use the content
-			return $response;
-		}
+		$client = new Tumblr\API\Client($creds['consumer_key'], $creds['consumer_secret']);
+		$client->setToken($creds['access_token'], $creds['access_token_secret']);
+		return $client->getUserInfo();
 	}
 	
-	public function create_new_blog_post(){
+	public function create_new_blog_post($creds = array(), $post_data){
 		//* /post — Create a New Blog Post
 		//api.tumblr.com/v2/blog/{blog-identifier}/post
-		$blog_id = $creds['blog_id'];
-		$consumer_key = $creds['oauth_consumer_key'];
-		$url = $this->url . $blog_id . '/info?api_key=' . $consumer_key;
-		$response = wp_remote_get($url);
-		if ( is_array( $response ) ) {
-			$header = $response['headers']; // array of http header lines
-			//echo $response['body']; // use the content
-			return $response;
-		}
+		
+		$client = new Tumblr\API\Client($creds['consumer_key'], $creds['consumer_secret']);
+		$client->setToken($creds['access_token'], $creds['access_token_secret']);
+		return $client->createPost($creds['blog_id'], $post_data);
 	}
 	
 	

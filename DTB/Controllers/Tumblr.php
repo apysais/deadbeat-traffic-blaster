@@ -37,8 +37,20 @@ class DTB_Controllers_Tumblr extends DTB_Base{
 			$blog_id = $_POST['blog_id'];
 		}
 		$oauth_consumer_key = '';
-		if( trim($_POST['oauth_consumer_key']) != '' ){
-			$oauth_consumer_key = $_POST['oauth_consumer_key'];
+		if( trim($_POST['consumer_key']) != '' ){
+			$oauth_consumer_key = $_POST['consumer_key'];
+		}
+		$consumer_secret = '';
+		if( trim($_POST['consumer_secret']) != '' ){
+			$consumer_secret = $_POST['consumer_secret'];
+		}
+		$access_token = '';
+		if( trim($_POST['access_token']) != '' ){
+			$access_token = $_POST['access_token'];
+		}
+		$access_token_secret = '';
+		if( trim($_POST['access_token_secret']) != '' ){
+			$access_token_secret = $_POST['access_token_secret'];
 		}
 		$name = 'Tumblr';
 		if( trim($_POST['name']) != '' ){
@@ -46,7 +58,10 @@ class DTB_Controllers_Tumblr extends DTB_Base{
 		}
 		$settings_array = array(
 			'blog_id' => $blog_id,
-			'oauth_consumer_key' => $oauth_consumer_key,
+			'consumer_key' => $oauth_consumer_key,
+			'consumer_secret' => $consumer_secret,
+			'access_token' => $access_token,
+			'access_token_secret' => $access_token_secret,
 		);
 		$data = array(
 			'service' => 'tumblr',
@@ -64,9 +79,23 @@ class DTB_Controllers_Tumblr extends DTB_Base{
 	}
 	
 	public function tumblr_test(){
-		$creds = DTB_Admin_AccountDB::get_instance()->get(23);
+		$creds = DTB_Admin_AccountDB::get_instance()->get(24);
 		$arr_settings = unserialize($creds->settings);
 		$ret = DTB_API_Tumblr::get_instance()->oauth_info($arr_settings);
+		echo '<pre>';
+		print_r($ret);
+		echo '</pre>';
+	}
+	
+	public function tumblr_create_posts(){
+		$creds = DTB_Admin_AccountDB::get_instance()->get(24);
+		$arr_settings = unserialize($creds->settings);
+		$post_array = array(
+			'type' => 'text',
+			'title' => 'Hello World!',
+			'body' => 'The quick brown fox jumps over the lazy dog!',
+		);
+		$ret = DTB_API_Tumblr::get_instance()->create_new_blog_post($arr_settings, $post_array);
 		echo '<pre>';
 		print_r($ret);
 		echo '</pre>';

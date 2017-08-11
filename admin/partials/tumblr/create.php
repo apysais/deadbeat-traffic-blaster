@@ -23,9 +23,27 @@
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="blogname">OAuth Consumer Key:</label></th>
+						<th scope="row"><label for="blogname">Consumer Key:</label></th>
 						<td>
-							<input type="text" name="oauth_consumer_key" style="width:80%;">
+							<input type="text" name="consumer_key" style="width:80%;">
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="blogname">Consumer Secret:</label></th>
+						<td>
+							<input type="text" name="consumer_secret" style="width:80%;">
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="blogname">Access Token:</label></th>
+						<td>
+							<input type="text" name="access_token" style="width:80%;">
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="blogname">Access Token Secret:</label></th>
+						<td>
+							<input type="text" name="access_token_secret" style="width:80%;">
 						</td>
 					</tr>
 				</tbody>

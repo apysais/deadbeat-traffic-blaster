@@ -71,7 +71,35 @@ class DTB_API_WP {
 		);
 	}
 	
-	
+	public function post_status($creds = array(), $content){
+		$options  = array (
+		  'http' => 
+		  array (
+			'ignore_errors' => true,
+			'method' => 'POST',
+			'header' => 
+			array (
+			  0 => 'authorization: Bearer '.$creds['api_token'],
+			  1 => 'Content-Type: application/x-www-form-urlencoded',
+			),
+			'content' => 
+			 http_build_query(  array (
+				'title' => $content['title'],
+				'content' => $content['content']
+			  )),
+		  ),
+		);
+		print_r($options); 
+		$context  = stream_context_create( $options );
+		$url = $this->url . '/' . $this->url_end_point . '/' . $creds['blog_id'] . '/posts/new/';
+		echo $url;
+		$response = file_get_contents(
+			$url,
+			false,
+			$context
+		);
+		return json_decode( $response );
+	}
 	
 	public function __construct(){}
 }
