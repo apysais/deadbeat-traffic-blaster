@@ -190,16 +190,16 @@ class DTB_API_Facebook {
 		return $response;
 	}
 
-	public function publish_account($fb_page_id, $app_id, $app_secret, $access_token){
+	public function publish_account($fb_page_id, $app_id, $app_secret, $access_token, $message){
 		$fb = new Facebook\Facebook([
 		  'app_id' => $app_id,
 		  'app_secret' => $app_secret,
 		  'default_graph_version' => 'v2.2',
 		  ]);
-		$access_token = 'EAARNJlgaD58BALEZAF9HH56tW3tJ8rGy7iiwQ5DrCHTp0RDIBpbH6lZAvFNLjUxogrD6P6k78s19yhda0Qrikw0mPsE1sN34dGTXhYAfB6jnouM1DRyN2LFCZCuzGs1Xzb1p37jXV5Ih7m4t1WI8w2l452gVqfrQeMVuvImBsomZC4mDcicV';
+		//$access_token = 'EAARNJlgaD58BALEZAF9HH56tW3tJ8rGy7iiwQ5DrCHTp0RDIBpbH6lZAvFNLjUxogrD6P6k78s19yhda0Qrikw0mPsE1sN34dGTXhYAfB6jnouM1DRyN2LFCZCuzGs1Xzb1p37jXV5Ih7m4t1WI8w2l452gVqfrQeMVuvImBsomZC4mDcicV';
 		$request = $fb->request('POST',
 			'/'.$fb_page_id.'/feed', 
-			['message' => 'This is a test message 123'], 
+			['message' => $message], 
 			$access_token
 		);
 
