@@ -91,7 +91,20 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 							$new_post_message = str_replace($search_syndicate, $replace_post, $post_message);
 							switch($val_syndicate['service']){
 								case 'facebook':
-									echo ':'.$new_post_message.'<br>';
+									echo 'facebook: '.$new_post_message.'<br>';
+									//run facebook post api here
+								break;
+								case 'twitter':
+									echo 'twitter: '.$new_post_message.'<br>';
+									//run twitter post api here
+								break;
+								case 'wordpress':
+									echo 'wordpress: '.$new_post_message.'<br>';
+									//run wordpress post api here
+								break;
+								case 'tumblr':
+									echo 'tumblr: '.$new_post_message.'<br>';
+									//run tumblr post api here
 								break;
 							}
 						}
