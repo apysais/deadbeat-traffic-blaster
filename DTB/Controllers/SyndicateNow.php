@@ -80,16 +80,17 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 				foreach($posts_array as $key => $val){
 					foreach($syndicate as $key_syndicate => $val_syndicate){
 						if( isset($val_syndicate['service']) ){
+							$new_post_message = '';
+							$post_message = '';
+							$post_message  = $val_syndicate['message'];
+							//echo $post_message;
+							$replace_post = array($val['title'], $val['content'], $val['content_fifty'], $val['url']);
+							//print_r($replace_post);
+							$search_syndicate   = array("%TITLE%", "%CONTENT%", "%FIRST50%", "%LINK%");
+							//print_r($search_syndicate);
+							$new_post_message = str_replace($search_syndicate, $replace_post, $post_message);
 							switch($val_syndicate['service']){
 								case 'facebook':
-									$post_message = '';
-									$post_message  = $val_syndicate['message'];
-									//echo $post_message;
-									$replace_post = array($val['title'], $val['content'], $val['content_fifty'], $val['url']);
-									//print_r($replace_post);
-									$search_syndicate   = array("%TITLE%", "%CONTENT%", "%FIRST50%", "%LINK%");
-									//print_r($search_syndicate);
-									$new_post_message = str_replace($search_syndicate, $replace_post, $post_message);
 									echo ':'.$new_post_message.'<br>';
 								break;
 							}
