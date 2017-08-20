@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-class DTB_Admin_Tumblr {
+class DTB_Admin_SyndicateNow {
 	protected static $instance = null;
 	
 	/**
@@ -32,7 +32,7 @@ class DTB_Admin_Tumblr {
 	}
 		
 	public function menu_slug(){
-		return 'dbtb-tumblr';
+		return 'dbtb-syndicate-now';
 	}
 	
 	public function redirect_url(){
@@ -49,17 +49,14 @@ class DTB_Admin_Tumblr {
 		$parent = DTB_Admin_DeadBeatTrafficBlaster::get_instance()->menu_slug();
 		add_submenu_page(
 			$parent,
-			esc_html__( 'Tumblr', $textdomain ),
-			esc_html__( 'Create New Tumblr', $textdomain ),
+			esc_html__( 'Syndicate', $textdomain ),
+			esc_html__( 'Syndicate Now', $textdomain ),
 			'manage_options',
 			$this->menu_slug(),
-			array(DTB_Controllers_Tumblr::get_instance(), 'controller')
+			array(DTB_Controllers_SyndicateNow::get_instance(), 'controller')
 		);
 	}
-	public function get_credentials($account_id){
-		$cred = DTB_Admin_AccountDB::get_instance()->get_by_service_id($account_id, 'tumblr');
-		return unserialize($cred->settings);
-	}
+	
 	public function init_hook(){
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'add_admin_submenu' ) );

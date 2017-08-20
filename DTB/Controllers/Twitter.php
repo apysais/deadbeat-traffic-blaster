@@ -98,6 +98,12 @@ class DTB_Controllers_Twitter extends DTB_Base{
 		DTB_API_Twitter::get_instance()->post_status($cred, $status);
 	}
 	
+	public function syndicate_html(){
+		$twitter = DTB_Admin_AccountDB::get_instance()->get_by_service('twitter');
+		$data['twitter'] = $twitter;
+		DTB_View::get_instance()->admin_partials('partials/syndicate-now/twitter.php', $data);
+	}
+	
 	/**
 	 * Controller
 	 *

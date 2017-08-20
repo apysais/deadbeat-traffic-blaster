@@ -108,6 +108,12 @@ class DTB_Controllers_Tumblr extends DTB_Base{
 		$data['action'] = 'admin.php?page=' . $menu_slug;
 		DTB_View::get_instance()->admin_partials('partials/tumblr/create.php', $data);
 	}
+	
+	public function syndicate_html(){
+		$tumblr = DTB_Admin_AccountDB::get_instance()->get_by_service('tumblr');
+		$data['tumblr'] = $tumblr;
+		DTB_View::get_instance()->admin_partials('partials/syndicate-now/tumblr.php', $data);
+	}
 		
 	/**
 	 * Controller

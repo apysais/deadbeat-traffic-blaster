@@ -28,6 +28,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 spl_autoload_register('dbtb_autoload_class');
 function dbtb_autoload_class($class_name){
     if ( false !== strpos( $class_name, 'DTB' ) ) {
@@ -48,6 +49,10 @@ function dbtb_autoload_class($class_name){
  * This action is documented in includes/class-deadbeat-traffic-blaster-activator.php
  */
 function activate_deadbeat_traffic_blaster() {
+	if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+		throw new Exception('The Plugin requires PHP version 5.4 or higher.');
+		die;
+	}
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-deadbeat-traffic-blaster-activator.php';
 	Deadbeat_Traffic_Blaster_Activator::activate();
 	new DTB_Admin_DeadBeatTrafficBlasterDB;
@@ -110,6 +115,7 @@ function run_deadbeat_traffic_blaster() {
 	new DTB_Admin_WP;
 	new DTB_Admin_Tumblr;
 	require_once plugin_dir_path( __FILE__ ) . 'api/Tumblr/vendor/autoload.php';
+	new DTB_Admin_SyndicateNow;
 }
 add_action('plugins_loaded', 'run_deadbeat_traffic_blaster');
 function dbtb_redirect($url){

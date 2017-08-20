@@ -77,6 +77,12 @@ class DTB_Controllers_WP extends DTB_Base{
 		$data['redirect_url'] = DTB_Admin_WP::get_instance()->redirect_url();
 		DTB_View::get_instance()->admin_partials('partials/wp/wp-create.php', $data);
 	}
+	
+	public function syndicate_html(){
+		$wp = DTB_Admin_AccountDB::get_instance()->get_by_service('wordpress');
+		$data['wp'] = $wp;
+		DTB_View::get_instance()->admin_partials('partials/syndicate-now/wp.php', $data);
+	}
 		
 	/**
 	 * Controller

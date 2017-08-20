@@ -96,17 +96,33 @@ class DTB_Controllers_Facebook extends DTB_Base{
 	}
 	
 	public function fb_account($account_id){
-		$cred = DTB_Admin_Facebook::get_instance()->get_credentials(18);
-		$me = DTB_API_Facebook::get_instance()->me_account($cred['app_id'], $cred['app_secret'], $cred['fb_access_token']);
+		$cred = DTB_Admin_Facebook::get_instance()->get_credentials(1);
+		$me = DTB_API_Facebook::get_instance()->me_account(
+			$cred['app_id'], 
+			$cred['app_secret'], 
+			$cred['fb_access_token']
+		);
 		print_r($me->getDecodedBody());
 	}
 
 	public function fb_publish_account($account_id){
 		$cred = DTB_Admin_Facebook::get_instance()->get_credentials(18);
-		$me = DTB_API_Facebook::get_instance()->publish_account('102815823111268', $cred['app_id'], $cred['app_secret'], $cred['fb_access_token']);
+		$me = DTB_API_Facebook::get_instance()->publish_account(
+			'102815823111268',
+			$cred['app_id'],
+			$cred['app_secret'],
+			$cred['fb_access_token']
+		);
 		print_r($me);
 	}
 	
+	public function syndicate_html(){
+		$fb = DTB_Admin_AccountDB::get_instance()->get_by_service('facebook');
+		$data['fb'] = $fb;
+		DTB_View::get_instance()->admin_partials('partials/syndicate-now/fb.php', $data);
+	}
+	
+		
 	/**
 	 * Controller
 	 *

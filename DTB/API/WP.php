@@ -89,10 +89,10 @@ class DTB_API_WP {
 			  )),
 		  ),
 		);
-		print_r($options); 
+		//print_r($options); 
 		$context  = stream_context_create( $options );
 		$url = $this->url . '/' . $this->url_end_point . '/' . $creds['blog_id'] . '/posts/new/';
-		echo $url;
+		//echo $url;
 		$response = file_get_contents(
 			$url,
 			false,

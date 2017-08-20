@@ -313,7 +313,7 @@ class DTB_View{
 		extract($data);
 		if( file_exists($template_file) ){
 			//check in plugin
-			$template_file = apply_filters('lbc_display_template_file', $template_file, $data, 10, 2);
+			$template_file = apply_filters('dtb_display_template_file', $template_file, $data, 10, 2);
 			if( $require ){
 				require $template_file;
 			}else{
