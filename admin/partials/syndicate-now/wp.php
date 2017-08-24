@@ -3,9 +3,9 @@
 		<tr>
 			<th scope="row"><label for="blogname"><?php echo $val_wp->name;?></label></th>
 			<td>
-				<input name="syndicate[<?php echo $val_wp->account_id;?>][title]" style="width:50%;">
+				<input name="syndicate[<?php echo $val_wp->account_id;?>][title]" style="width:50%;" value="%TITLE%">
 				<p></p>
-				<textarea name="syndicate[<?php echo $val_wp->account_id;?>][message]" rows="10" cols="90"></textarea>
+				<textarea name="syndicate[<?php echo $val_wp->account_id;?>][message]" rows="10" cols="90">%FIRST50% ... Read more: <a href="%LINK">%LINK%</a></textarea>
 				<?php $cred = DTB_Admin_WP::get_instance()->get_credentials($val_wp->account_id);?>
 				<input type="hidden" name="syndicate[<?php echo $val_wp->account_id;?>][account_id]" value="<?php echo $val_wp->account_id;?>">
 				<input type="hidden" name="syndicate[<?php echo $val_wp->account_id;?>][service]" value="<?php echo $val_wp->service;?>">

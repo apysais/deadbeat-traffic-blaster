@@ -46,9 +46,6 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 	}
 	
 	public function post_syndicate_now(){
-		/*echo '<pre>';
-		print_r($_POST);
-		echo '</pre>';exit();*/
 		$has_posts_selected = false;
 		//get posts
 		$posts = array();
@@ -56,69 +53,28 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 		if( isset($_POST['posts']) ){
 			$has_posts_selected = true;
 			$posts = $_POST['posts'];
-			$args = array(
-				'post__in' => $posts
-			);
-			$get_posts = get_posts( $args );
-
-			if( $get_posts ){
-				foreach($get_posts as $key => $val){
-					$posts_array[] = array(
-						'id' => $val->ID,
-						'title' => $val->post_title,
-						'content' => wp_strip_all_tags($val->post_content),
-						'content_fifty' => substr(wp_strip_all_tags($val->post_content),0,50) . '...',
-						'url' => get_permalink($val->ID),
-					);
-				}
-			}
-			/*echo '<pre>';
-			print_r($posts_array);
-			echo '</pre>';*/
+			$posts_array = DTB_Admin_Post::get_instance()->get_posts($posts);
 			if( !empty($posts_array) && !empty($_POST['syndicate']) ){
 				$syndicate = $_POST['syndicate'];
 				foreach($posts_array as $key => $val){
 					foreach($syndicate as $key_syndicate => $val_syndicate){
 						if( isset($val_syndicate['service']) ){
-							$new_post_message = '';
-							$post_message = '';
-							$post_message  = $val_syndicate['message'];
-							//echo $post_message;
-							$replace_post = array($val['title'], $val['content'], $val['content_fifty'], $val['url']);
-							//print_r($replace_post);
-							$search_syndicate   = array("%TITLE%", "%CONTENT%", "%FIRST50%", "%LINK%");
-							//print_r($search_syndicate);
-							$new_post_message = str_replace($search_syndicate, $replace_post, $post_message);
-							
-							$post_title = '';
-							$new_title_only = '';
-							if( isset($val_syndicate['title']) ){
-								$post_title = $val_syndicate['title'];
-								$replace_title_only = array($val['title']);
-								$search_title_only = array("%TITLE%");
-								$new_title_only = str_replace($search_title_only, $replace_title_only, $post_title);
-							}
-							
-							$post_content = $val_syndicate['message'];
-							$replace_content_only = array($val['content']);
-							$search_content_only = array("%CONTENT%");
-							$new_content_only = str_replace($search_content_only, $replace_content_only, $post_content);
+							$source = array(
+								'message' => $val_syndicate['message'],
+								'title' => isset($val_syndicate['title']) ? $val_syndicate['title']:'',
+							);
+							$replace_post = array(
+								'title' => $val['title'], 
+								'content' => $val['content'], 
+								'content_fifty' => $val['content_fifty'], 
+								'url' => $val['url']
+							);
+							$parse_content = DTB_Admin_Post::get_instance()->parse_message_title($source, $replace_post);
 
-							$post_content_fifty = $val_syndicate['message'];
-							$replace_content_fifty_only = array($val['content_fifty']);
-							$search_content_fifty_only = array("%FIRST50%");
-							$new_content_fifty_only = str_replace($search_content_fifty_only, $replace_content_fifty_only, $post_content_fifty);
-
-							$post_link = $val_syndicate['message'];
-							$replace_link = array($val['url']);
-							$search_link = array("%LINK%");
-							$new_link = str_replace($search_link, $replace_link, $post_link);
-							
 							switch($val_syndicate['service']){
 								case 'facebook':
 									if( isset($val_syndicate['pages']) ){
 										$explode_pages = explode('::', $val_syndicate['pages']);
-										//print_r($explode_pages);
 										$page_access_token = '';
 										if( isset($explode_pages[0]) ){
 											$page_access_token = $explode_pages[0];
@@ -130,13 +86,12 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 										$app_id = $val_syndicate['app_id'];
 										$app_secret = $val_syndicate['app_secret'];
 										$fb_access_token = $val_syndicate['fb_access_token'];
-										//echo 'facebook: '.$new_post_message.'<br>';
 										$me = DTB_API_Facebook::get_instance()->publish_account(
 											$page_id,
 											$app_id,
 											$app_secret,
 											$page_access_token,
-											$new_post_message
+											$parse_content['message']
 										);
 										//print_r($me);
 									}
@@ -150,12 +105,12 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 										'access_token_secret' => $val_syndicate['access_token_secret'],
 									);
 									//run twitter post api here
-									DTB_API_Twitter::get_instance()->post_status($cred, $new_post_message);
+									DTB_API_Twitter::get_instance()->post_status($cred, $parse_content['message']);
 								break;
 								case 'wordpress':
 									$content = array(
-										'title' => $new_title_only,
-										'content' => $new_post_message,
+										'title' => $parse_content['title'],
+										'content' => $parse_content['message'],
 									);
 									$cred = array(
 										'account_id' => $val_syndicate['account_id'],
@@ -172,8 +127,8 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 									if($val_syndicate['title'] != '' && $val_syndicate['message'] != ''){
 										$post_array = array(
 											'type' => 'text',
-											'title' => $new_title_only,
-											'body' => $new_content_only,
+											'title' => $parse_content['title'],
+											'body' => $parse_content['message'],
 										);
 										$arr_settings = array(
 											'account_id' => $val_syndicate['account_id'],

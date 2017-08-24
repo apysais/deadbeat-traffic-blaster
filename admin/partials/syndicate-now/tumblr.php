@@ -3,9 +3,9 @@
 		<tr>
 			<th scope="row"><label for="blogname"><?php echo $val_tumblr->name;?></label></th>
 			<td>
-				<input name="syndicate[<?php echo $val_tumblr->account_id;?>][title]" style="width:50%;">
+				<input name="syndicate[<?php echo $val_tumblr->account_id;?>][title]" style="width:50%;" value="%TITLE%">
 				<p></p>
-				<textarea name="syndicate[<?php echo $val_tumblr->account_id;?>][message]" rows="10" cols="90"></textarea>
+				<textarea name="syndicate[<?php echo $val_tumblr->account_id;?>][message]" rows="10" cols="90">%CONTENT% %LINK%</textarea>
 				<?php $cred = DTB_Admin_Tumblr::get_instance()->get_credentials($val_tumblr->account_id); ?>
 				<input type="hidden" name="syndicate[<?php echo $val_tumblr->account_id;?>][account_id]" value="<?php echo $val_tumblr->account_id;?>">
 				<input type="hidden" name="syndicate[<?php echo $val_tumblr->account_id;?>][service]" value="<?php echo $val_tumblr->service;?>">

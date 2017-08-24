@@ -28,7 +28,7 @@
 					<input type="hidden" name="syndicate[<?php echo $val_fb->account_id;?>][fb_access_token]" value="<?php echo $cred['fb_access_token']; ?>">
 				<?php } ?>
 				<p></p>
-				<textarea name="syndicate[<?php echo $val_fb->account_id;?>][message]" rows="10" cols="90"></textarea>
+				<textarea name="syndicate[<?php echo $val_fb->account_id;?>][message]" rows="10" cols="90">%TITLE% - %LINK%</textarea>
 			</td>
 		</tr>
 	<?php } ?>

@@ -3,7 +3,7 @@
 		<tr>
 			<th scope="row"><label for="blogname"><?php echo $val_twitter->name;?> </label></th>
 			<td>
-				<textarea name="syndicate[<?php echo $val_twitter->account_id;?>][message]" rows="10" cols="90"></textarea>
+				<textarea name="syndicate[<?php echo $val_twitter->account_id;?>][message]" rows="10" cols="90">%TITLE% %LINK%</textarea>
 				<?php $cred = DTB_Admin_Twitter::get_instance()->get_credentials($val_twitter->account_id);	?>
 				<input type="hidden" name="syndicate[<?php echo $val_twitter->account_id;?>][account_id]" value="<?php echo $val_twitter->account_id;?>">
 				<input type="hidden" name="syndicate[<?php echo $val_twitter->account_id;?>][service]" value="<?php echo $val_twitter->service;?>">
