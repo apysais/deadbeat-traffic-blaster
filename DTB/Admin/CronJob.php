@@ -31,6 +31,11 @@ class DTB_Admin_CronJob {
 		return self::$instance;
 	}
 	
+		
+	public function menu_slug($id){
+		return '?dbtb-cronjob='.$id;
+	}
+	
 	public function http_request_print(){
 		global $wp_query;
 		//wget "http://test.dev/wp/?dtbcronjob=123"

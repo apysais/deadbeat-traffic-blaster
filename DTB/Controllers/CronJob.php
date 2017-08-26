@@ -33,6 +33,8 @@ class DTB_Controllers_CronJob extends DTB_Base{
 		return self::$instance;
 	}
 	
+
+	
 	public function dtb_cronjob(){
 		print_r($_GET);
 	}

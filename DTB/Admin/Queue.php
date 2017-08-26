@@ -34,6 +34,7 @@ class DTB_Admin_Queue {
 	public function menu_slug(){
 		return 'dbtb-queue';
 	}
+
 	
 	/**
 	 * Add sub menu page

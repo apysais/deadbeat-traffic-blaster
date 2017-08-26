@@ -57,6 +57,32 @@ class DTB_Admin_Facebook {
 		$cred = DTB_Admin_AccountDB::get_instance()->get_by_service_id($account_id, 'facebook');
 		return unserialize($cred->settings);
 	}
+
+	public function get_pages(){
+		$pages = array();
+		$fb = DTB_Admin_AccountDB::get_instance()->get_by_service('facebook');
+		if($fb){
+			foreach($fb as $val_fb) {
+				$cred = DTB_Admin_Facebook::get_instance()->get_credentials($val_fb->account_id);
+				$me = DTB_API_Facebook::get_instance()->me_account(
+					$cred['app_id'], 
+					$cred['app_secret'], 
+					$cred['fb_access_token']
+				);
+				$page = $me->getDecodedBody();
+				if( isset($page['accounts']['data']) ){
+					foreach($page['accounts']['data'] as $val_pages){
+						$pages[] = array(
+							'access_token' => $val_pages['access_token'],
+							'id' => $val_pages['id'],
+							'name' => $val_pages['name']
+						);
+					}
+				}
+			}
+		}
+		return $pages;
+	}
 	
 	public function init_hook(){
 		if ( is_admin() ) {

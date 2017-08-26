@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DTB_Controllers_Queue extends DTB_Base{
 	protected static $instance = null;
 	protected $menu_slug = null;
+	protected $model;
 	/**
 	 * Return an instance of this class.
 	 *
@@ -35,6 +36,9 @@ class DTB_Controllers_Queue extends DTB_Base{
 		$data = array();
 		$menu_slug = $this->menu_slug;
 		$data['menu_slug'] = $menu_slug;
+		$data['list'] = $this->model->get_db_list();
+		$data['edit_url'] = 'admin.php?page='.$menu_slug.'&_method=edit-queue';
+		$data['delete_url'] = 'admin.php?page='.$menu_slug.'&_method=delete-queue';
 		DTB_View::get_instance()->admin_partials('partials/queue/main.php', $data);
 	}
 	
@@ -46,8 +50,89 @@ class DTB_Controllers_Queue extends DTB_Base{
 		$data['choose_posts'] = DTB_Admin_Queue::get_instance()->get_posts();
 		$fb = DTB_Admin_AccountDB::get_instance()->get_by_service('facebook');
 		$data['fb'] = $fb;
+		$data['method'] = 'store_queue';
+		$data['action'] = 'admin.php?page=' . $this->menu_slug;
 		DTB_View::get_instance()->admin_partials('partials/queue/create.php', $data);
 		//$data['create_view_form'] = $this->view_create_form();
+	}
+	
+	public function store_queue(){
+		global $wpdb;
+		$queue_name = '';
+		if( isset($_POST['queue_name']) && trim($_POST['queue_name']) != '' ){
+			$queue_name = $_POST['queue_name'];
+			$queue_id = $this->model->db_store($queue_name);
+			if( $queue_id ){
+				$post_id = array();
+				if( isset($_POST['post_id']) ){
+					$post_id = $_POST['post_id'];
+				}
+				$choose_fb_page = array();
+				if( isset($_POST['choose_fb_page']) ){
+					$choose_fb_page = $_POST['choose_fb_page'];
+				}
+				$this->model->store(
+					$wpdb->insert_id,
+					$post_id,
+					$choose_fb_page
+				);
+			}
+			
+		}
+	}
+	
+	public function edit_queue(){
+		$id = false;
+		if( isset($_GET['id']) && trim($_GET['id']) != '' ){
+			$id = $_GET['id'];
+			if( $id ){
+				$db = $this->model->get_db_list($id);
+				$data['edit_db'] = $db[0];
+				//get the items
+				$get_post_id_array = array();
+				$current_items = $this->queue_model_items->get_db_list($id);
+				if( $current_items ){
+					foreach($current_items as $k => $v){
+						$get_post_id_array[] = $v->post_id;
+					}
+				}
+				$data['current_items'] = $current_items;
+				$data['get_post_id_array'] = $get_post_id_array;
+				
+				//get the fb pages id
+				$current_fb_pages = $this->queue_model_meta->get_by_queue_id($id, 'facebook_page');
+				$data['choose_fb_page'] = DTB_Admin_Facebook::get_instance()->get_pages();
+				if( $current_fb_pages ){
+					$current_fb_pages = unserialize($current_fb_pages[0]->meta_value);
+					$fb_page_id = array();
+					foreach($current_fb_pages as $k => $v){
+						$explode = explode('::', $v);
+						$fb_page_id[] = $explode[1];
+					}
+					$data['current_fb_pages'] = $current_fb_pages;
+					$data['current_fb_page_id'] = $fb_page_id;
+				}
+				$data['method'] = 'update-queue';
+				$data['action'] = 'admin.php?page=' . $this->menu_slug;
+				$data['id'] = $id;
+				if( is_multisite() ){
+					$data['url_cron'] = ' wget "'.home_url() . '/' . DTB_Admin_CronJob::get_instance()->menu_slug($id);
+				}else{
+					$data['url_cron'] = ' wget "'.home_url() . '/' . DTB_Admin_CronJob::get_instance()->menu_slug($id);
+				}
+				$data['choose_posts'] = DTB_Admin_Queue::get_instance()->get_posts();
+				/*echo '<pre>';
+				print_r($data);
+				echo '</pre>';*/
+				DTB_View::get_instance()->admin_partials('partials/queue/edit.php', $data);
+			}
+		}
+	}
+	
+	public function update_queue(){
+		echo '<pre>';
+		print_r($_POST);
+		echo '</pre>';
 	}
 	
 	/**
@@ -64,5 +149,8 @@ class DTB_Controllers_Queue extends DTB_Base{
 	
 	public function __construct(){
 		$this->menu_slug = DTB_Admin_Queue::get_instance()->menu_slug();
+		$this->model = new DTB_Model_Queue;
+		$this->queue_model_items = new DTB_Model_QueueItem;
+		$this->queue_model_meta = new DTB_Model_QueueMeta;
 	}
 }

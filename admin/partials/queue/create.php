@@ -7,8 +7,8 @@
 			<p>Error</p>
 		</div>
 		<div>
-			<form method="post" action="#">
-				<input type="hidden" name="content" value="post_store_queue">
+			<form name="settings" method="post" action="<?php echo $action;?>">
+				<input type="hidden" name="_method" value="<?php echo $method;?>">
 				<p>Name : </p>
 				<p><input type="text" name="queue_name" style="width:50%;"></p>
 				<div class="list-posts">
@@ -39,17 +39,14 @@
 							<?php if( isset($page['accounts']['data']) ){ ?>
 								<select name="choose_fb_page[]" id="choose_fb_page" multiple style="width:50%;">
 									<?php foreach($page['accounts']['data'] as $val_pages){ ?>
-											<option value="<?php echo $val_pages['access_token']; ?>::<?php echo $val_pages['id']; ?>">
+											<option value="<?php echo $val_pages['id']; ?>">
 												<?php echo $val_pages['name']; ?>
 											</option>
 									<?php } ?>
 								</select>
-								
-								<input type="hidden" name="syndicate[<?php echo $val_fb->account_id;?>][account_id]" value="<?php echo $val_fb->account_id;?>">
-								<input type="hidden" name="syndicate[<?php echo $val_fb->account_id;?>][service]" value="<?php echo $val_fb->service;?>">
-								<input type="hidden" name="syndicate[<?php echo $val_fb->account_id;?>][app_id]" value="<?php echo $cred['app_id']; ?>">
-								<input type="hidden" name="syndicate[<?php echo $val_fb->account_id;?>][app_secret]" value="<?php echo $cred['app_secret']; ?>">
-								<input type="hidden" name="syndicate[<?php echo $val_fb->account_id;?>][fb_access_token]" value="<?php echo $cred['fb_access_token']; ?>">
+								<input type="hidden" name="queue_fb_page[app_id]" value="<?php echo $cred['app_id']; ?>">
+								<input type="hidden" name="queue_fb_page[app_secret]" value="<?php echo $cred['app_secret']; ?>">
+								<input type="hidden" name="queue_fb_page[fb_access_token]" value="<?php echo $cred['fb_access_token']; ?>">
 							<?php } ?>
 						<?php }//foreach($fb) ?>
 					<?php }//if($fb) ?>

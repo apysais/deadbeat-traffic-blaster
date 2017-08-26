@@ -55,28 +55,22 @@ class DTB_Model_Queue{
 		return false;
 	}
 	
-	public function store($post_id = array(), $choose_fb_page = array()){
+	public function store($queue_id, $post_id = array(), $choose_fb_page = array()){
 		global $wpdb;
-		$queue = $this->db_store();
-		if( $queue ){
-			if( !empty($post_id) ){
-				$queue_id = $wpdb->insert_id;
-				$items_array = array();
-				foreach($post_id as $k => $v){
-					$items_array = array(
-						'deadbeat_queue_id' => $queue_id,
-						'post_id' => $v
-					);
-					$this->queue_model_items->db_store($items_array);
-				}
+		if( !empty($post_id) ){
+			$items_array = array();
+			foreach($post_id as $k => $v){
+				$items_array = array(
+					'deadbeat_queue_id' => $queue_id,
+					'post_id' => $v
+				);
+				$this->queue_model_items->db_store($items_array);
 			}
-			if( !empty($choose_fb_page) ){
-				$fb_pages_id = $choose_fb_page;
-				$this->queue_model_meta->db_store($queue_id,'facebook_page', $fb_pages_id);
-			}
-			return $queue_id;
 		}
-		return false;
+		if( !empty($choose_fb_page) ){
+			$fb_pages_id = $choose_fb_page;
+			$this->queue_model_meta->db_store($queue_id,'facebook_page', $fb_pages_id);
+		}
 	}
 	
 	public function db_store($name){
@@ -139,7 +133,6 @@ class DTB_Model_Queue{
 				);
 				$delet_queue_array_format = array('%d','%d');
 				$this->queue_model_items->db_delete_where($delet_queue_array,$delet_queue_array_format);
-				//print_r($delet_queue_array);echo '<br>';
 			}
 		}
 
