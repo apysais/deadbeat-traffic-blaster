@@ -53,6 +53,8 @@ function activate_deadbeat_traffic_blaster() {
 		throw new Exception('The Plugin requires PHP version 5.4 or higher.');
 		die;
 	}
+	
+	flush_rewrite_rules();
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-deadbeat-traffic-blaster-activator.php';
 	Deadbeat_Traffic_Blaster_Activator::activate();
 	new DTB_Admin_DeadBeatTrafficBlasterDB;
@@ -102,20 +104,27 @@ function dbtb_get_plugin_dir(){
  * @since    1.0.0
  */
 function run_deadbeat_traffic_blaster() {
-
 	$plugin = new Deadbeat_Traffic_Blaster();
 	$plugin->run();
 	//facebook
 	require_once plugin_dir_path( __FILE__ ) . 'api/Facebook/autoload.php';
 	new DTB_Admin_DeadBeatTrafficBlaster;
 	new DTB_Admin_Facebook;
+	//twitter
 	require_once plugin_dir_path( __FILE__ ) . 'api/Twitter/autoload.php';
 	new DTB_Admin_Twitter;
 	new DTB_API_Twitter;
+	//wp
 	new DTB_Admin_WP;
+	//tumblr
 	new DTB_Admin_Tumblr;
 	require_once plugin_dir_path( __FILE__ ) . 'api/Tumblr/vendor/autoload.php';
+	//syndicate now
 	new DTB_Admin_SyndicateNow;
+	//queue
+	new DTB_Admin_Queue;
+	new DTB_Admin_CronJob;
+	//DTB_Controllers_CronJob::get_instance()->controller();
 }
 add_action('plugins_loaded', 'run_deadbeat_traffic_blaster');
 function dbtb_redirect($url){
