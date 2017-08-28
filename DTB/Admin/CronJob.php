@@ -35,7 +35,7 @@ class DTB_Admin_CronJob {
 	
 		
 	public function menu_slug($id){
-		return '?dbtb-cronjob='.$id;
+		return '?dtbcronjob='.$id;
 	}
 	
 	public function http_request_print(){
