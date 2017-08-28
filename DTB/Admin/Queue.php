@@ -110,10 +110,10 @@ class DTB_Admin_Queue {
 			'exclude'          => '',
 			'meta_key'         => '',
 			'meta_value'       => '',
-			'post_type'        => 'deadbeatposts',
+			'post_type' 	   => array('post', 'deadbeatposts'),
 			'post_mime_type'   => '',
 			'post_parent'      => '',
-			'author'	   => '',
+			'author'	   	   => '',
 			'author_name'	   => '',
 			'post_status'      => 'publish',
 			'suppress_filters' => true 

@@ -54,7 +54,7 @@ class DTB_Model_QueueItem{
 		}
 		return false;
 	}
-
+	
 	public function get_db_query($deadbeat_queue_id, $sql_query){
 		global $wpdb;
 		

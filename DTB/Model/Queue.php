@@ -50,10 +50,15 @@ class DTB_Model_Queue{
 		$count = $wpdb->get_var($sql_count);
 		if( $count > 0 ){
 			$sql = "SELECT * FROM $table $where";
-			return $wpdb->get_results($sql);
+			if( !is_null($id) ){
+				return $wpdb->get_row($sql);
+			}else{
+				return $wpdb->get_results($sql);
+			}
 		}
 		return false;
 	}
+	
 	
 	public function store($queue_id, $post_id = array(), $choose_fb_page = array()){
 		global $wpdb;
@@ -93,8 +98,7 @@ class DTB_Model_Queue{
 		$fb_page_id = $choose_fb_page;
 		
 		$db_items = $this->get_db_list($id);
-		$orig_name = $db_items[0]->name;
-		$queue_name = '';
+		$orig_name = $db_items->name;
 		if( trim($queue_name) != ''
 			&& strcmp($orig_name, trim($queue_name)) !== 0
 		){

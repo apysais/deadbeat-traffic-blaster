@@ -87,7 +87,7 @@ class DTB_Controllers_Queue extends DTB_Base{
 			$id = $_GET['id'];
 			if( $id ){
 				$db = $this->model->get_db_list($id);
-				$data['edit_db'] = $db[0];
+				$data['edit_db'] = $db;
 				//get the items
 				$get_post_id_array = array();
 				$current_items = $this->queue_model_items->get_db_list($id);
@@ -104,21 +104,15 @@ class DTB_Controllers_Queue extends DTB_Base{
 				$data['choose_fb_page'] = DTB_Admin_Facebook::get_instance()->get_pages();
 				if( $current_fb_pages ){
 					$current_fb_pages = unserialize($current_fb_pages[0]->meta_value);
-					$fb_page_id = array();
-					foreach($current_fb_pages as $k => $v){
-						$explode = explode('::', $v);
-						$fb_page_id[] = $explode[1];
-					}
 					$data['current_fb_pages'] = $current_fb_pages;
-					$data['current_fb_page_id'] = $fb_page_id;
 				}
 				$data['method'] = 'update-queue';
 				$data['action'] = 'admin.php?page=' . $this->menu_slug;
 				$data['id'] = $id;
 				if( is_multisite() ){
-					$data['url_cron'] = ' wget "'.home_url() . '/' . DTB_Admin_CronJob::get_instance()->menu_slug($id);
+					$data['url_cron'] = ' wget "'.home_url() . '/' . DTB_Admin_CronJob::get_instance()->menu_slug($id).'"';
 				}else{
-					$data['url_cron'] = ' wget "'.home_url() . '/' . DTB_Admin_CronJob::get_instance()->menu_slug($id);
+					$data['url_cron'] = ' wget "'.home_url() . '/' . DTB_Admin_CronJob::get_instance()->menu_slug($id).'"';
 				}
 				$data['choose_posts'] = DTB_Admin_Queue::get_instance()->get_posts();
 				/*echo '<pre>';
@@ -130,9 +124,28 @@ class DTB_Controllers_Queue extends DTB_Base{
 	}
 	
 	public function update_queue(){
-		echo '<pre>';
-		print_r($_POST);
-		echo '</pre>';
+		global $wpdb;
+		$id = null;
+		if( isset($_POST['id']) 
+			&& $_POST['id'] != ''
+		){
+			$id = $_POST['id'];
+			if( !is_null($id) ){
+				$queue_name = '';
+				if( isset($_POST['queue_name']) 
+					&& trim($_POST['queue_name']) != ''
+				){
+					$queue_name = $_POST['queue_name'];
+				}
+				$this->model->update(
+					$id,
+					$queue_name,
+					isset($_POST['post_id']) ? $_POST['post_id']:array(),
+					isset($_POST['choose_fb_page']) ? $_POST['choose_fb_page']:array()
+				);
+			}//!is_null($id)
+		}//$_POST['id']
+		
 	}
 	
 	/**

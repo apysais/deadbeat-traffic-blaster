@@ -35,7 +35,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 		$data = array();
 		$args = array(
 			'posts_per_page'   => -1,
-			'post_type' => array('post','deadbeatposts'),
+			'post_type' 	   => array('post', 'deadbeatposts'),
 			'post_status' => 'publish',
 		);
 		$posts_array = get_posts( $args );

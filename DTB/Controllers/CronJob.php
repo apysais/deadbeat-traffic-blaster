@@ -36,7 +36,10 @@ class DTB_Controllers_CronJob extends DTB_Base{
 
 	
 	public function dtb_cronjob(){
-		print_r($_GET);
+		if( isset($_GET['dbtb-cronjob']) ){
+			print_r($_GET);
+		}
+		die();
 	}
 	
 	/**

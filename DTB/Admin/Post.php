@@ -35,11 +35,13 @@ class DTB_Admin_Post {
 		$posts_array = array();
 		if( is_array($posts) && !empty($posts) ){
 			$args = array(
-				'post__in' => $posts
+				'post__in' => $posts,
+				'post_type' => array('post', 'deadbeatposts')
 			);
 			$get_posts = get_posts( $args );
-
+			print_r($args);
 			if( $get_posts ){
+				
 				foreach($get_posts as $key => $val){
 					$posts_array[] = array(
 						'id' => $val->ID,
