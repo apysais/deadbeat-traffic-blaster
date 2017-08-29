@@ -87,6 +87,9 @@ function dbtb_get_plugin_details(){
 	$ret = get_plugins();
 	return $ret['deadbeat-traffic-blaster/deadbeat-traffic-blaster.php'];
 }
+function dbtb_root_url(){
+	return plugin_dir_url( __FILE__ );
+}
 function dbtb_get_text_domain(){
 	$ret = dbtb_get_plugin_details();
 	return $ret['TextDomain'];

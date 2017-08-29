@@ -24,7 +24,7 @@
 							<p>Name : <input type="text" name="name" value="<?php echo $v->name;?>" style="width:100%;"></p>
 							<p>App ID : <input type="text" name="name" value="<?php echo $settings['app_id'];?>" style="width:100%;"></p>
 							<p>App Secret : <input type="text" name="name" value="<?php echo $settings['app_secret'];?>" style="width:100%;"></p>
-							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Re Authenticate">  <input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
+							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
 						</form>
 						<hr>
 				<?php } ?>
@@ -42,7 +42,7 @@
 							<p>Consumer Secret : <input type="text" name="name" value="<?php echo $settings['consumer_secret'];?>" style="width:100%;"></p>
 							<p>Access Token : <input type="text" name="name" value="<?php echo $settings['access_token'];?>" style="width:100%;"></p>
 							<p>Access Token Secret : <input type="text" name="name" value="<?php echo $settings['access_token_secret'];?>" style="width:100%;"></p>
-							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Re Authenticate">  <input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
+							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
 						</form>
 						<hr>
 				<?php } ?>
@@ -62,7 +62,7 @@
 							<p>Client Secret : <input type="text" name="name" value="<?php echo $settings['client_secret'];?>" style="width:100%;"></p>
 							<p>API Token : <input type="text" name="name" value="<?php echo $settings['api_token'];?>" style="width:100%;"></p>
 							<p>Blog ID : <input type="text" name="name" value="<?php echo $settings['blog_id'];?>" style="width:100%;"></p>
-							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Re Authenticate">  <input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
+							<p> <input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
 						</form>
 						<hr>
 				<?php } ?>
@@ -81,7 +81,7 @@
 							<p>Consumer Secret : <input type="text" name="name" value="<?php echo $settings['consumer_secret'];?>" style="width:100%;"></p>
 							<p>Access Token : <input type="text" name="name" value="<?php echo $settings['access_token'];?>" style="width:100%;"></p>
 							<p>Access Token Secret : <input type="text" name="name" value="<?php echo $settings['access_token_secret'];?>" style="width:100%;"></p>
-							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Re Authenticate">  <input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
+							<p><input type="submit" name="submit" id="submit" class="button button-primary" value="Delete"></p>
 						</form>
 						<hr>
 				<?php } ?>

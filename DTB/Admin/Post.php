@@ -39,7 +39,7 @@ class DTB_Admin_Post {
 				'post_type' => array('post', 'deadbeatposts')
 			);
 			$get_posts = get_posts( $args );
-			print_r($args);
+
 			if( $get_posts ){
 				
 				foreach($get_posts as $key => $val){

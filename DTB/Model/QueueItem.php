@@ -35,7 +35,23 @@ class DTB_Model_QueueItem{
 		global $wpdb;
 		return  $wpdb->prefix . 'deadbeat_queue_items';
 	}
-
+	
+	public function get_item_not_posted($deadbeat_queue_id){
+		global $wpdb;
+		
+		$table = $this->table();
+		
+		$where = "WHERE deadbeat_queue_id = $deadbeat_queue_id AND is_posted = 0";
+		
+		$count = $wpdb->get_var( "SELECT COUNT(*) FROM $table $where" );
+		if( $count > 0 ){
+			
+			$sql = "SELECT * FROM $table $where";
+			return $wpdb->get_results($sql);
+		}
+		return false;
+	}
+	
 	public function get_db_list($deadbeat_queue_id = null, $where = null){
 		global $wpdb;
 		
@@ -124,14 +140,15 @@ class DTB_Model_QueueItem{
 	
 	public function db_reset_post($deadbeat_queue_id){
 		global $wpdb;
-
-		return $wpdb->update(
+		$ret = $wpdb->update(
 			$this->table(),
 			array('is_posted' => 0),
 			array('deadbeat_queue_id' => $deadbeat_queue_id),
 			array('%d'),
 			array('%d')
 		);
+		//var_dump( $wpdb->last_query );
+		return $ret;
 	}
 	
 	public function db_delete($id){

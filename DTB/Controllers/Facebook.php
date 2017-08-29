@@ -36,6 +36,8 @@ class DTB_Controllers_Facebook extends DTB_Base{
 		$menu_slug = $this->fb_menu_slug;
 		$data['method'] = 'create_facebook_api';
 		$data['action'] = 'admin.php?page=' . $menu_slug;
+		$data['plugin_details'] = dbtb_get_plugin_details();
+		$data['root_url'] = dbtb_root_url();
 		DTB_View::get_instance()->admin_partials('partials/fb/fb-create.php', $data);
 	}
 	

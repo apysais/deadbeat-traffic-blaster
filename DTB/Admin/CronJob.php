@@ -38,23 +38,34 @@ class DTB_Admin_CronJob {
 		return '?dtbcronjob='.$id;
 	}
 	
-	public function http_request_print(){
+	public function http_request_print($dtbcronjob_id = null){
 		global $wp_query;
 		//wget "http://test.dev/wp/?dtbcronjob=123"
 		//curl "http://test.dev/wp/?dtbcronjob=123"
 		//print_r($wp_query);
-		if( isset($_GET['dtbcronjob']) ){
+		//print_r($_GET);
+
+		//echo isset($_GET['dtbcronjob']) ? 'y':'n';
+
+		if( !is_null($dtbcronjob_id) && isset($_GET['dtbcronjob']) ){
+			$dtbcronjob_id = $_GET['dtbcronjob'];
+		}
+
+		if( $dtbcronjob_id ){
 			$post_id_array = array();
 			$queue_items_id_array = array();
 			
-			$queue_id = $_GET['dtbcronjob'];
+			$queue_id = $dtbcronjob_id;
 			$queue = $this->model->get_db_list($queue_id);
-			$items = $this->queue_model_items->get_db_list($queue_id);
-			foreach($items as $k => $v){
-				$post_id_array[] = $v->post_id;
-				$queue_items_id_array[] = $v->deadbeat_queue_id;
-			}//foreach($items as $k => $v)
-			
+			//$items = $this->queue_model_items->get_db_list($queue_id);
+			$items = $this->queue_model_items->get_item_not_posted($queue_id);
+			if( $items ){
+				foreach($items as $k => $v){
+					$post_id_array[] = $v->post_id;
+					$queue_items_id_array[] = $v->deadbeat_queue_id;
+				}//foreach($items as $k => $v)
+			}
+
 			$accounts = $this->account->get();
 			$posts_array = DTB_Admin_Post::get_instance()->get_posts($post_id_array);
 			$source = array(
@@ -65,6 +76,7 @@ class DTB_Admin_CronJob {
 			);
 			if( !empty($posts_array) ){
 				foreach($posts_array as $k => $val){
+					$post_id = $val['id'];
 					$replace_post = array(
 						'title' => $val['title'], 
 						'content' => $val['content'], 
@@ -79,7 +91,7 @@ class DTB_Admin_CronJob {
 					foreach($accounts as $key_accounts => $val_accounts){
 						$_creds = unserialize($val_accounts->settings);
 						switch($val_accounts->service){
-							case 'facebook':
+							case 'facebookx':
 								
 								$app_id = $_creds['app_id'];
 								$app_secret = $_creds['app_secret'];
@@ -106,7 +118,7 @@ class DTB_Admin_CronJob {
 									}
 								}
 							break;
-							case 'twitter':
+							case 'twitterx':
 								$consumer_key = $_creds['consumer_key'];
 								$consumer_secret = $_creds['consumer_secret'];
 								$access_token = $_creds['access_token'];
@@ -120,7 +132,7 @@ class DTB_Admin_CronJob {
 								//run twitter post api here
 								DTB_API_Twitter::get_instance()->post_status($cred, $new_msg['title'].' '.$new_msg['link']);
 							break;
-							case 'wordpress':
+							case 'wordpressx':
 								$content = array(
 									'title' => $new_msg['title'],
 									'content' => $new_msg['content'],
@@ -135,8 +147,9 @@ class DTB_Admin_CronJob {
 								$ret = DTB_API_WP::get_instance()->post_status($cred, $content);
 								//echo 'wordpress: '.$new_post_message.'<br>';
 								//run wordpress post api here
+								
 							break;
-							case 'tumblr':
+							case 'tumblrx':
 								$tumbrl_post_array = array(
 									'type' => 'text',
 									'title' => $new_msg['title'],
@@ -159,16 +172,21 @@ class DTB_Admin_CronJob {
 							break;
 						}
 					}//foreach($accounts as $key_accounts => $val_accounts)
+					$this->queue_model_items->db_update_is_posted($queue_id, $post_id);
 				}//foreach($posts_array as $k => $val)
+			}else{
+				$ret = $this->queue_model_items->db_reset_post($queue_id);
+				//$this->http_request_print($queue_id);
 			}//if( !empty($posts_array) )
-			die();
 		}//if( isset($_GET['dtbcronjob']) )
+		die();
 	}
 	
 	public function __construct(){
 		if( !is_admin() ){
-			add_action('parse_request', array($this,'http_request_print'));
+			add_action('init', array($this,'http_request_print'));
 		}
+		
 		$this->account = new DTB_Admin_AccountDB;
 		$this->model = new DTB_Model_Queue;
 		$this->queue_model_items = new DTB_Model_QueueItem;
