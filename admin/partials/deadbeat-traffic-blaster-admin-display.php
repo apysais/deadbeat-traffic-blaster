@@ -3,9 +3,8 @@
 	<div>
 		<h2 class="nav-tab-wrapper wp-clearfix">
 			<a href="#" class="nav-tab nav-tab-active">Social Media Accounts</a>
-			<a href="#" class="nav-tab">Activity Logs</a>
-			<a href="#" class="nav-tab">Syndicate Now</a>
-			<a href="#" class="nav-tab">Queue Syndicate</a>
+			<!--<a href="#" class="nav-tab">Syndicate Now</a>
+			<a href="#" class="nav-tab">Queue Syndicate</a>-->
 		</h2>
 	</div>
 	<div class="feature-section one-col">
