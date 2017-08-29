@@ -35,7 +35,6 @@ $domain = strstr($domain, '/', true); //PHP5 only, this is in case WP is not roo
 			<p>Before you can activate your app, you must supply Facebook with your contact email and website address. To do this, first click on the Settings option as shown in the image above. On the settings page, you have to enter your email, your website domain, and your URL.</p>
 			<img src="<?php echo $root_url . 'admin/help/facebook_4.jpg'; ?>">
 			<p>The Site URL option will only appear after you have added the website platform. To do this, click the "Add Platform" button then select "Website." You can then enter your domain, email, and site URL in their respective fields.</p>
-			<p>The Site URL option will only appear after you have added the website platform. To do this, click the "Add Platform" button then select "Website." You can then enter your domain, email, and site URL in their respective fields.</p>
 			<p>Based on your Wordpress configuration, your App Domain appears to be <span style="font-weight: bold; background-color: #8ca7e0;"><?php echo $domain; ?></span>, and your Site URL appears to be 
 			<span style="font-weight: bold; background-color: #8ca7e0;"><?php echo get_site_url(); ?></span>. Once you've entered the required information, click the "Save Changes" button.</p>
 		</div>

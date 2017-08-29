@@ -178,8 +178,8 @@ class DTB_Admin_CronJob {
 				$ret = $this->queue_model_items->db_reset_post($queue_id);
 				//$this->http_request_print($queue_id);
 			}//if( !empty($posts_array) )
+			die();
 		}//if( isset($_GET['dtbcronjob']) )
-		die();
 	}
 	
 	public function __construct(){

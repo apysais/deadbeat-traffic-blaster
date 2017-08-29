@@ -95,10 +95,7 @@ class DTB_Controllers_Tumblr extends DTB_Base{
 			'title' => 'Hello World!',
 			'body' => 'The quick brown fox jumps over the lazy dog!',
 		);
-		$ret = DTB_API_Tumblr::get_instance()->create_new_blog_post($arr_settings, $post_array);
-		echo '<pre>';
-		print_r($ret);
-		echo '</pre>';
+		return DTB_API_Tumblr::get_instance()->create_new_blog_post($arr_settings, $post_array);
 	}
 	
 	public function dbtb_tumblr(){
@@ -106,6 +103,8 @@ class DTB_Controllers_Tumblr extends DTB_Base{
 		$menu_slug = $this->tumblr_menu_slug;
 		$data['method'] = 'create_tumblr_api';
 		$data['action'] = 'admin.php?page=' . $menu_slug;
+		$data['plugin_details'] = dbtb_get_plugin_details();
+		$data['root_url'] = dbtb_root_url();
 		DTB_View::get_instance()->admin_partials('partials/tumblr/create.php', $data);
 	}
 	

@@ -75,6 +75,8 @@ class DTB_Controllers_WP extends DTB_Base{
 		$data['method'] = 'create_wp_api';
 		$data['action'] = 'admin.php?page=' . $menu_slug;
 		$data['redirect_url'] = DTB_Admin_WP::get_instance()->redirect_url();
+		$data['plugin_details'] = dbtb_get_plugin_details();
+		$data['root_url'] = dbtb_root_url();
 		DTB_View::get_instance()->admin_partials('partials/wp/wp-create.php', $data);
 	}
 	

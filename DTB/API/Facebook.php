@@ -47,8 +47,9 @@ class DTB_API_Facebook {
 		$permissions = ['email', 'manage_pages', 'publish_pages']; // Optional permissions
 		$url = admin_url('admin.php?page=dbtb-facebook&_method=fallback');
 		$loginUrl = $helper->getLoginUrl($url, $permissions);
-		
-		echo '<h2><a href="' . htmlspecialchars($loginUrl) . '&app_id='.$app_id.'&app_secret='.$app_secret.'">Log in with Facebook!</a></h2>';
+		echo '<div id="dbtb-wrapper" class="about-wrap wrap">';
+		echo '<h2><a href="' . htmlspecialchars($loginUrl) . '&app_id='.$app_id.'&app_secret='.$app_secret.'">To gain permission click this to Log in with Facebook!</a></h2>';
+		echo '</div>';
 	}
 	
 	public function fallback(){
