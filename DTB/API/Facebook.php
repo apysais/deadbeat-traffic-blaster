@@ -48,7 +48,7 @@ class DTB_API_Facebook {
 		$url = admin_url('admin.php?page=dbtb-facebook&_method=fallback');
 		$loginUrl = $helper->getLoginUrl($url, $permissions);
 		
-		echo '<a href="' . htmlspecialchars($loginUrl) . '&app_id='.$app_id.'&app_secret='.$app_secret.'">Log in with Facebook!</a>';
+		echo '<h2><a href="' . htmlspecialchars($loginUrl) . '&app_id='.$app_id.'&app_secret='.$app_secret.'">Log in with Facebook!</a></h2>';
 	}
 	
 	public function fallback(){
