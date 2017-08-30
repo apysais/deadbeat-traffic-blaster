@@ -52,6 +52,22 @@ class DTB_Model_QueueItem{
 		return false;
 	}
 	
+	public function get_item_not_posted_row($deadbeat_queue_id){
+		global $wpdb;
+		
+		$table = $this->table();
+		
+		$where = "WHERE deadbeat_queue_id = $deadbeat_queue_id AND is_posted = 0";
+		
+		$count = $wpdb->get_var( "SELECT COUNT(*) FROM $table $where" );
+		if( $count > 0 ){
+			
+			$sql = "SELECT * FROM $table $where";
+			return $wpdb->get_row($sql);
+		}
+		return false;
+	}
+	
 	public function get_db_list($deadbeat_queue_id = null, $where = null){
 		global $wpdb;
 		

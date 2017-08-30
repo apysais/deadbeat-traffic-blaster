@@ -50,7 +50,7 @@ function dbtb_autoload_class($class_name){
  */
 function activate_deadbeat_traffic_blaster() {
 	if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-		throw new Exception('The Plugin requires PHP version 5.4 or higher.');
+		wp_die('The Plugin requires PHP version 5.4 or higher.');
 		die;
 	}
 	

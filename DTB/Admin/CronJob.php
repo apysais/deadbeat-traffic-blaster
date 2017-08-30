@@ -59,13 +59,12 @@ class DTB_Admin_CronJob {
 			$queue = $this->model->get_db_list($queue_id);
 			//$items = $this->queue_model_items->get_db_list($queue_id);
 			$items = $this->queue_model_items->get_item_not_posted($queue_id);
-			if( $items ){
-				foreach($items as $k => $v){
-					$post_id_array[] = $v->post_id;
-					$queue_items_id_array[] = $v->deadbeat_queue_id;
-				}//foreach($items as $k => $v)
+			$get_first_item = $items[0];
+			if( $get_first_item ){
+				$post_id_array[] = $get_first_item->post_id;
+				$queue_items_id_array[] = $get_first_item->deadbeat_queue_id;
 			}
-
+			
 			$accounts = $this->account->get();
 			$posts_array = DTB_Admin_Post::get_instance()->get_posts($post_id_array);
 			$source = array(
@@ -74,6 +73,12 @@ class DTB_Admin_CronJob {
 				'first50' => '%FIRST50%',
 				'link' => '%LINK%',
 			);
+			/*echo '<pre>';
+			print_r($items);
+			print_r($post_id_array);
+			print_r($posts_array);
+			echo '</pre>';
+			exit();*/
 			if( !empty($posts_array) ){
 				foreach($posts_array as $k => $val){
 					$post_id = $val['id'];
@@ -91,7 +96,7 @@ class DTB_Admin_CronJob {
 					foreach($accounts as $key_accounts => $val_accounts){
 						$_creds = unserialize($val_accounts->settings);
 						switch($val_accounts->service){
-							case 'facebookx':
+							case 'facebook':
 								
 								$app_id = $_creds['app_id'];
 								$app_secret = $_creds['app_secret'];
@@ -118,7 +123,7 @@ class DTB_Admin_CronJob {
 									}
 								}
 							break;
-							case 'twitterx':
+							case 'twitter':
 								$consumer_key = $_creds['consumer_key'];
 								$consumer_secret = $_creds['consumer_secret'];
 								$access_token = $_creds['access_token'];
@@ -132,7 +137,7 @@ class DTB_Admin_CronJob {
 								//run twitter post api here
 								DTB_API_Twitter::get_instance()->post_status($cred, $new_msg['title'].' '.$new_msg['link']);
 							break;
-							case 'wordpressx':
+							case 'wordpress':
 								$content = array(
 									'title' => $new_msg['title'],
 									'content' => $new_msg['content'],
@@ -149,7 +154,7 @@ class DTB_Admin_CronJob {
 								//run wordpress post api here
 								
 							break;
-							case 'tumblrx':
+							case 'tumblr':
 								$tumbrl_post_array = array(
 									'type' => 'text',
 									'title' => $new_msg['title'],
