@@ -97,7 +97,7 @@ class DTB_Admin_CronJob {
 						$_creds = unserialize($val_accounts->settings);
 						switch($val_accounts->service){
 							case 'facebook':
-								
+								//echo $val_accounts->service.'<br>';
 								$app_id = $_creds['app_id'];
 								$app_secret = $_creds['app_secret'];
 								$fb_access_token = $_creds['fb_access_token'];
@@ -124,6 +124,7 @@ class DTB_Admin_CronJob {
 								}
 							break;
 							case 'twitter':
+								//echo $val_accounts->service.'<br>';
 								$consumer_key = $_creds['consumer_key'];
 								$consumer_secret = $_creds['consumer_secret'];
 								$access_token = $_creds['access_token'];
@@ -138,6 +139,7 @@ class DTB_Admin_CronJob {
 								DTB_API_Twitter::get_instance()->post_status($cred, $new_msg['title'].' '.$new_msg['link']);
 							break;
 							case 'wordpress':
+								//echo $val_accounts->service.'<br>';
 								$content = array(
 									'title' => $new_msg['title'],
 									'content' => $new_msg['content'],
@@ -155,6 +157,7 @@ class DTB_Admin_CronJob {
 								
 							break;
 							case 'tumblr':
+								//echo $val_accounts->service.'<br>';
 								$tumbrl_post_array = array(
 									'type' => 'text',
 									'title' => $new_msg['title'],

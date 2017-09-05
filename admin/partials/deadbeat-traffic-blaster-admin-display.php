@@ -17,8 +17,9 @@
 			<?php //print_r($fb_api);?>
 			<?php if( !empty($fb_api) ){ ?>
 				<?php foreach($fb_api as $k => $v) { ?>
-						<form>
-							<input type="hidden" name="id" value="<?php echo $v->id;?>">
+						<form action="admin.php?page=dbtb-main" method="POST">
+							<input type="hidden" name="id" value="<?php echo $v->account_id;?>">
+							<input type="hidden" name="_method" value="delete_fb">
 							<?php $settings = unserialize($v->settings);?>
 							<p>Name : <input type="text" name="name" value="<?php echo $v->name;?>" style="width:100%;"></p>
 							<p>App ID : <input type="text" name="name" value="<?php echo $settings['app_id'];?>" style="width:100%;"></p>
@@ -33,8 +34,9 @@
 			<h3>Twitter</h3>
 			<?php if( !empty($twitter_api) ){ ?>
 				<?php foreach($twitter_api as $k => $v) { ?>
-						<form>
-							<input type="hidden" name="id" value="<?php echo $v->id;?>">
+						<form action="admin.php?page=dbtb-main" method="POST">
+							<input type="hidden" name="id" value="<?php echo $v->account_id;?>">
+							<input type="hidden" name="_method" value="delete_twitter">
 							<?php $settings = unserialize($v->settings);?>
 							<p>Name : <input type="text" name="name" value="<?php echo $v->name;?>" style="width:100%;"></p>
 							<p>Consumer Key : <input type="text" name="name" value="<?php echo $settings['consumer_key'];?>" style="width:100%;"></p>
@@ -53,8 +55,9 @@
 			<h3>Wordpress</h3>
 			<?php if( !empty($wp_api) ){ ?>
 				<?php foreach($wp_api as $k => $v) { ?>
-						<form>
-							<input type="hidden" name="id" value="<?php echo $v->id;?>">
+						<form action="admin.php?page=dbtb-main" method="POST">
+							<input type="hidden" name="id" value="<?php echo $v->account_id;?>">
+							<input type="hidden" name="_method" value="delete_wp">
 							<?php $settings = unserialize($v->settings);?>
 							<p>Name : <input type="text" name="name" value="<?php echo $v->name;?>" style="width:100%;"></p>
 							<p>Client ID : <input type="text" name="name" value="<?php echo $settings['client_id'];?>" style="width:100%;"></p>
@@ -71,8 +74,9 @@
 			<h3>Tumblr</h3>
 			<?php if( !empty($tumblr_api) ){ ?>
 				<?php foreach($tumblr_api as $k => $v) { ?>
-						<form>
-							<input type="hidden" name="id" value="<?php echo $v->id;?>">
+						<form action="admin.php?page=dbtb-main" method="POST">
+							<input type="hidden" name="id" value="<?php echo $v->account_id;?>">
+							<input type="hidden" name="_method" value="delete_tumblr">
 							<?php $settings = unserialize($v->settings);?>
 							<p>Name : <input type="text" name="name" value="<?php echo $v->name;?>" style="width:100%;"></p>
 							<p>Blog URL : <input type="text" name="name" value="<?php echo $settings['blog_id'];?>" style="width:100%;"></p>

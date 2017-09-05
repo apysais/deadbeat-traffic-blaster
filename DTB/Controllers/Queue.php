@@ -148,6 +148,10 @@ class DTB_Controllers_Queue extends DTB_Base{
 		
 	}
 	
+	public function delete_queue(){
+		print_r($_GET);
+	}
+	
 	/**
 	 * Controller
 	 *

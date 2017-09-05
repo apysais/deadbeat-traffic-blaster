@@ -206,19 +206,20 @@ class DTB_API_Facebook {
 
 		// Send the request to Graph
 		try {
-		  $response = $fb->getClient()->sendRequest($request);
+			$response = $fb->getClient()->sendRequest($request);
+			$graphNode = $response->getGraphNode();
+			return $graphNode;
 		} catch(Facebook\Exceptions\FacebookResponseException $e) {
 		  // When Graph returns an error
-		  echo 'Graph returned an error: ' . $e->getMessage();
-		  exit;
+		  return 'Graph returned an error: ' . $e->getMessage();
+		  //exit;
 		} catch(Facebook\Exceptions\FacebookSDKException $e) {
 		  // When validation fails or other local issues
-		  echo 'Facebook SDK returned an error: ' . $e->getMessage();
-		  exit;
+		  return 'Facebook SDK returned an error: ' . $e->getMessage();
+		  //exit;
 		}
 
-		$graphNode = $response->getGraphNode();
-		return $graphNode;
+		
 	}
 	
 	public function get_access_token($page_id){

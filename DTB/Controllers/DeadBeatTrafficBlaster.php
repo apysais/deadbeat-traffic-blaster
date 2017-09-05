@@ -31,6 +31,22 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 		return self::$instance;
 	}
 	
+	public function delete_fb(){
+		print_r($_POST);
+	}
+	
+	public function delete_twitter(){
+		print_r($_POST);
+	}
+	
+	public function delete_wp(){
+		print_r($_POST);
+	}
+	
+	public function delete_tumblr(){
+		print_r($_POST);
+	}
+	
 	public function dbtb_main(){
 		global $wpdb;
 		$data = array();

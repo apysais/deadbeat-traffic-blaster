@@ -119,6 +119,6 @@
 			<?php }//count($choose_fb_page) ?>
 		</div>
 		<p><input type="submit" value="Update" name="Update"></p>
-		<p><input type="button" onclick="location.href='admin.php?page=tbsettings&pg=queue_syndicate';" value="Go Back" /></p>
+		<p><input type="button" onclick="location.href='admin.php?page=dbtb-queue';" value="Go Back" /></p>
 	</form>
 </div>

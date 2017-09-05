@@ -52,7 +52,7 @@
 					<?php }//if($fb) ?>
 				</div>
 				<p><input type="submit" value="Add" name="Add"></p>
-				<p><input type="button" onclick="location.href='admin.php?page=tbsettings&pg=queue_syndicate';" value="Go Back" /></p>
+				<p><input type="button" onclick="location.href='admin.php?page=dbtb-queue';" value="Go Back" /></p>
 			</form>
 		</div>
 

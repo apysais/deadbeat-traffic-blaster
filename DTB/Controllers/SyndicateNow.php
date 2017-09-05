@@ -50,6 +50,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 		//get posts
 		$posts = array();
 		$posts_array = array();
+		$result_syndicate = array();
 		if( isset($_POST['posts']) ){
 			$has_posts_selected = true;
 			$posts = $_POST['posts'];
@@ -70,9 +71,9 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 								'url' => $val['url']
 							);
 							$parse_content = DTB_Admin_Post::get_instance()->parse_message_title($source, $replace_post);
-
+							
 							switch($val_syndicate['service']){
-								case 'facebook':
+								case 'facebookx':
 									if( isset($val_syndicate['pages']) ){
 										$explode_pages = explode('::', $val_syndicate['pages']);
 										$page_access_token = '';
@@ -94,10 +95,16 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 											$parse_content['message']
 										);
 										//print_r($me);
+										//echo $me['id'];
+										if( isset($me['id']) ){
+											$result_syndicate['success'][] = 'Facebook successfully syndicated';
+										}else{
+											$result_syndicate['error'][] = 'Facebook error: '.$me;
+										}
 									}
 									//run facebook post api here
 								break;
-								case 'twitter':
+								case 'twitterx':
 									$cred = array(
 										'consumer_key' => $val_syndicate['consumer_key'],
 										'consumer_secret' => $val_syndicate['consumer_secret'],
@@ -105,9 +112,14 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 										'access_token_secret' => $val_syndicate['access_token_secret'],
 									);
 									//run twitter post api here
-									DTB_API_Twitter::get_instance()->post_status($cred, $parse_content['message']);
+									$res = DTB_API_Twitter::get_instance()->post_status($cred, $parse_content['message']);
+									if( isset($res->errors) ){
+										$result_syndicate['error'][] = 'Twitter error: '.$res->errors[0]->message;
+									}else{
+										$result_syndicate['success'][] = 'Twitter successfully syndicated';
+									}
 								break;
-								case 'wordpress':
+								case 'wordpressx':
 									$content = array(
 										'title' => $parse_content['title'],
 										'content' => $parse_content['message'],
@@ -122,6 +134,12 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 									$ret = DTB_API_WP::get_instance()->post_status($cred, $content);
 									//echo 'wordpress: '.$new_post_message.'<br>';
 									//run wordpress post api here
+									if( isset($ret->error) ){
+										$result_syndicate['error'][] = 'WordPress error: '.$ret->error.'-'.$ret->message;
+									}else{
+										$result_syndicate['success'][] = 'WordPress successfully syndicated';
+									}
+									//print_r($result_syndicate);
 								break;
 								case 'tumblr':
 									if($val_syndicate['title'] != '' && $val_syndicate['message'] != ''){
@@ -138,7 +156,14 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 											'access_token' => $val_syndicate['access_token'],
 											'access_token_secret' => $val_syndicate['access_token_secret'],
 										);
-										$ret = DTB_API_Tumblr::get_instance()->create_new_blog_post($arr_settings, $post_array);
+										try{
+											DTB_API_Tumblr::get_instance()->create_new_blog_post($arr_settings, $post_array);
+											$result_syndicate['success'][] = 'Tumblr successfully syndicated';
+										}
+										catch(Tumblr\API\RequestException $e){
+											$result_syndicate['error'][] = 'Tumblr error: '.$e->getMessage();
+										}
+										//print_r($result_syndicate);
 									}
 									//echo 'tumblr: '.$new_post_message.'<br>';
 									//run tumblr post api here
