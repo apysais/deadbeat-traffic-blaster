@@ -73,7 +73,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 							$parse_content = DTB_Admin_Post::get_instance()->parse_message_title($source, $replace_post);
 							
 							switch($val_syndicate['service']){
-								case 'facebookx':
+								case 'facebook':
 									if( isset($val_syndicate['pages']) ){
 										$explode_pages = explode('::', $val_syndicate['pages']);
 										$page_access_token = '';
@@ -104,7 +104,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 									}
 									//run facebook post api here
 								break;
-								case 'twitterx':
+								case 'twitter':
 									$cred = array(
 										'consumer_key' => $val_syndicate['consumer_key'],
 										'consumer_secret' => $val_syndicate['consumer_secret'],
@@ -119,7 +119,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 										$result_syndicate['success'][] = 'Twitter successfully syndicated';
 									}
 								break;
-								case 'wordpressx':
+								case 'wordpress':
 									$content = array(
 										'title' => $parse_content['title'],
 										'content' => $parse_content['message'],
@@ -132,14 +132,15 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 										'blog_id' => $val_syndicate['blog_id'],
 									);
 									$ret = DTB_API_WP::get_instance()->post_status($cred, $content);
-									//echo 'wordpress: '.$new_post_message.'<br>';
-									//run wordpress post api here
-									if( isset($ret->error) ){
-										$result_syndicate['error'][] = 'WordPress error: '.$ret->error.'-'.$ret->message;
-									}else{
-										$result_syndicate['success'][] = 'WordPress successfully syndicated';
+									if ( is_wp_error( $ret ) ) {
+									   $result_syndicate['error'][] = $ret->get_error_message();
+									} else {
+										if($ret['response']['code'] == 403){
+											$result_syndicate['error'][] = $ret['response']['message'];
+										}else{
+											$result_syndicate['success'][] = 'WordPress successfully syndicated';
+										}
 									}
-									//print_r($result_syndicate);
 								break;
 								case 'tumblr':
 									if($val_syndicate['title'] != '' && $val_syndicate['message'] != ''){
@@ -163,10 +164,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 										catch(Tumblr\API\RequestException $e){
 											$result_syndicate['error'][] = 'Tumblr error: '.$e->getMessage();
 										}
-										//print_r($result_syndicate);
 									}
-									//echo 'tumblr: '.$new_post_message.'<br>';
-									//run tumblr post api here
 								break;
 							}
 						}
@@ -174,7 +172,9 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 				}
 			}
 		}
-		
+		echo '<pre>';
+		print_r($result_syndicate);
+		echo '</pre>';
 		//get posts
 	}
 	
