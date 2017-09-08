@@ -96,7 +96,7 @@ class DTB_Admin_CronJob {
 					foreach($accounts as $key_accounts => $val_accounts){
 						$_creds = unserialize($val_accounts->settings);
 						switch($val_accounts->service){
-							case 'facebook':
+							case 'facebookx':
 								//echo $val_accounts->service.'<br>';
 								$app_id = $_creds['app_id'];
 								$app_secret = $_creds['app_secret'];
@@ -123,7 +123,7 @@ class DTB_Admin_CronJob {
 									}
 								}
 							break;
-							case 'twitter':
+							case 'twitterx':
 								//echo $val_accounts->service.'<br>';
 								$consumer_key = $_creds['consumer_key'];
 								$consumer_secret = $_creds['consumer_secret'];
@@ -138,14 +138,14 @@ class DTB_Admin_CronJob {
 								//run twitter post api here
 								DTB_API_Twitter::get_instance()->post_status($cred, $new_msg['title'].' '.$new_msg['link']);
 							break;
-							case 'wordpress':
+							case 'wordpressx':
 								//echo $val_accounts->service.'<br>';
 								$content = array(
 									'title' => $new_msg['title'],
-									'content' => $new_msg['content'],
+									'content' => isset($new_msg['content']) ? $new_msg['content']:'',
 								);
 								$cred = array(
-									'account_id' => $_creds['account_id'],
+									'account_id' => isset($_creds['account_id']) ? $_creds['account_id']:0,
 									'client_id' => $_creds['client_id'],
 									'client_secret' => $_creds['client_secret'],
 									'api_token' => $_creds['api_token'],
@@ -157,26 +157,19 @@ class DTB_Admin_CronJob {
 								
 							break;
 							case 'tumblr':
-								//echo $val_accounts->service.'<br>';
 								$tumbrl_post_array = array(
 									'type' => 'text',
 									'title' => $new_msg['title'],
 									'body' => $new_msg['message'],
 								);
-								
-								if( isset($_creds['account_id']) ){
-									$arr_settings = array(
-										'account_id' => $_creds['account_id'],
-										'blog_id' => $_creds['blog_id'],
-										'consumer_key' => $_creds['consumer_key'],
-										'consumer_secret' => $_creds['consumer_secret'],
-										'access_token' => $_creds['access_token'],
-										'access_token_secret' => $_creds['access_token_secret'],
-									);
-									$ret = DTB_API_Tumblr::get_instance()->create_new_blog_post($arr_settings, $tumbrl_post_array);
-								}
-								//echo 'tumblr: '.$new_post_message.'<br>';
-								//run tumblr post api here
+								$arr_settings = array(
+									'blog_id' => $_creds['blog_id'],
+									'consumer_key' => $_creds['consumer_key'],
+									'consumer_secret' => $_creds['consumer_secret'],
+									'access_token' => $_creds['access_token'],
+									'access_token_secret' => $_creds['access_token_secret'],
+								);
+								$ret = DTB_API_Tumblr::get_instance()->create_new_blog_post($arr_settings, $tumbrl_post_array);
 							break;
 						}
 					}//foreach($accounts as $key_accounts => $val_accounts)
