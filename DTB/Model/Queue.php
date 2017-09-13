@@ -166,8 +166,7 @@ class DTB_Model_Queue{
 	
 	public function db_delete($id){
 		global $wpdb;
-		
-		$id = '';
+
 		if( trim($id) != '' ){
 			$queue = $wpdb->delete( $this->table(), array( 'id' => $id ), array( '%d' ) );
 			if( $queue ){

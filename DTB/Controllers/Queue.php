@@ -149,7 +149,11 @@ class DTB_Controllers_Queue extends DTB_Base{
 	}
 	
 	public function delete_queue(){
-		print_r($_GET);
+		if( isset($_GET['id']) && trim($_GET['id']) != '' ){
+			$id = $_GET['id'];
+			$this->model->db_delete($id);
+		}
+		$this->dbtb_queue();
 	}
 	
 	/**

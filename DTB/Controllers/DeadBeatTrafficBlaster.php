@@ -32,19 +32,35 @@ class DTB_Controllers_DeadBeatTrafficBlaster extends DTB_Base{
 	}
 	
 	public function delete_fb(){
-		print_r($_POST);
+		if( isset($_POST['id']) && trim($_POST['id']) != '' ){
+			$id = $_POST['id'];
+			DTB_Admin_AccountDB::get_instance()->delete($id);
+		}
+		$this->dbtb_main();
 	}
 	
 	public function delete_twitter(){
-		print_r($_POST);
+		if( isset($_POST['id']) && trim($_POST['id']) != '' ){
+			$id = $_POST['id'];
+			DTB_Admin_AccountDB::get_instance()->delete($id);
+		}
+		$this->dbtb_main();
 	}
 	
 	public function delete_wp(){
-		print_r($_POST);
+		if( isset($_POST['id']) && trim($_POST['id']) != '' ){
+			$id = $_POST['id'];
+			DTB_Admin_AccountDB::get_instance()->delete($id);
+		}
+		$this->dbtb_main();
 	}
 	
 	public function delete_tumblr(){
-		print_r($_POST);
+		if( isset($_POST['id']) && trim($_POST['id']) != '' ){
+			$id = $_POST['id'];
+			DTB_Admin_AccountDB::get_instance()->delete($id);
+		}
+		$this->dbtb_main();
 	}
 	
 	public function dbtb_main(){

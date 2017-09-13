@@ -1,11 +1,36 @@
+<style>
+.errors p{
+background: red;
+    color: white;
+}
+.success p{
+background: blue;
+    color: white;
+}
+
+</style>
 <div id="dbtb-wrapper" class="about-wrap wrap">
 	<div>
 		<h3>Syndicate Now : </h3>
 	</div>
 	<div class="wrap">
-		<div class="error hidden">
-			<p>Error</p>
+		<div class="errors">
+			<?php $error = DTB_Notice::get_instance()->getError();?>
+			<?php if( $error ){ ?>
+				<?php foreach($error as $k => $v){ ?>
+					<p><?php echo $v;?></p>
+				<?php } ?>
+			<?php } ?>
 		</div>
+		<div class="success">
+			<?php $success = DTB_Notice::get_instance()->getSuccess();?>
+			<?php if( $success ){ ?>
+				<?php foreach($success as $k => $v){ ?>
+					<p><?php echo $v;?></p>
+				<?php } ?>
+			<?php } ?>
+		</div>
+		<?php DTB_Notice::get_instance()->clear(); ?>
 		<div>
 			<p>You can use the following macros in any of the content fields below. These macros will be replaced with their corresponding values when the content is published. </p>
 

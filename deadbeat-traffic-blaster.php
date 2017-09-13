@@ -97,6 +97,18 @@ function dbtb_get_text_domain(){
 function dbtb_get_plugin_dir(){
 	return plugin_dir_path( __FILE__ );
 }
+if (!function_exists('write_log')) {
+    function write_log ( $log )  {
+        if ( true === WP_DEBUG ) {
+            if ( is_array( $log ) || is_object( $log ) ) {
+                error_log( print_r( $log, true ) );
+            } else {
+                error_log( $log );
+            }
+        }
+    }
+}
+
 /**
  * Begins execution of the plugin.
  *
@@ -109,6 +121,7 @@ function dbtb_get_plugin_dir(){
 function run_deadbeat_traffic_blaster() {
 	$plugin = new Deadbeat_Traffic_Blaster();
 	$plugin->run();
+	DTB_Notice::get_instance()->clear();
 	//facebook
 	require_once plugin_dir_path( __FILE__ ) . 'api/Facebook/autoload.php';
 	new DTB_Admin_DeadBeatTrafficBlaster;

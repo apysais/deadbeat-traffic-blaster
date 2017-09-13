@@ -3,6 +3,8 @@
 		<tr>
 			<th scope="row"><label for="blogname"><?php echo $val_wp->name;?></label></th>
 			<td>
+				<input type="checkbox" name="exclude_this[]" value="<?php echo $val_wp->service;?>"> Exclude This?
+				<p></p>
 				<input name="syndicate[<?php echo $val_wp->account_id;?>][title]" style="width:50%;" value="%TITLE%">
 				<p></p>
 				<textarea name="syndicate[<?php echo $val_wp->account_id;?>][message]" rows="10" cols="90">%FIRST50% ... Read more: <a href="%LINK">%LINK%</a></textarea>

@@ -12,6 +12,8 @@
 		<tr>
 			<th scope="row"><label for="blogname"><?php echo $val_fb->name;?></label></th>
 			<td>
+				<input type="checkbox" name="exclude_this[]" value="<?php echo $val_fb->service;?>"> Exclude This?
+				<p></p>
 				<?php if( isset($page['accounts']['data']) ){ ?>
 					<select name="syndicate[<?php echo $val_fb->account_id;?>][pages]">
 						<?php foreach($page['accounts']['data'] as $val_pages){ ?>

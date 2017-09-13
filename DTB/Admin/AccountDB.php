@@ -81,7 +81,7 @@ class DTB_Admin_AccountDB {
 	public function delete($id){
 		//$wpdb->delete( $table, $where, $where_format = null );
 		if($id != ''){
-			return $this->_wpdb->delete($this->table_name, $id);
+			return $this->_wpdb->delete($this->table_name, array( 'account_id' => $id ), array( '%d' ));
 		}else{
 			return false;
 		}
