@@ -34,6 +34,23 @@ class DTB_API_WP {
 	}
 	
 	public function oauth_authorize($creds = array()){
+		$wpcc_state = md5( mt_rand() );
+		$_SESSION[ 'wpcc_state' ] = $wpcc_state;
+		 
+		$url_to = 'https://public-api.wordpress.com/oauth2/authorize' . '?' . http_build_query( array(
+			'response_type' => 'code',
+			'client_id'     => $creds['client_id'],
+			'state'         => $wpcc_state,
+			'redirect_uri'  => $creds['redirect_url']
+		) );
+		echo '<div class="wrap">';
+		echo '<h1>';
+		echo '<a href="' . $url_to . '"><img src="//s0.wp.com/i/wpcc-button.png" width="231" /></a>';
+		echo '</h1>';
+		echo '</div>';
+
+	}
+	public function _oauth_authorize($creds = array()){
 		//https://public-api.wordpress.com/oauth2/authorize?client_id=your_client_id&redirect_uri=your_url&response_type=code&blog=1234
 		$_SESSION['client_id'] = $creds['client_id'];
 		$_SESSION['redirect_url'] = $creds['redirect_url'];
@@ -73,6 +90,8 @@ class DTB_API_WP {
 	
 	public function post_status($creds = array(), $content){
 		$url = $this->url . '/' . $this->url_end_point . '/' . $creds['blog_id'] . '/posts/new/';
+		//$url = $this->url . '/' . $this->url_end_point . '/' . 'apyc' . '/posts/new/';
+		//echo $url;
 		$response = wp_remote_post( $url, array(
 			'ignore_errors' => 'true',
 			'method' => 'POST',
@@ -93,6 +112,13 @@ class DTB_API_WP {
 		);
 		return $response;
 
+	}
+	
+	public function me($access_token){
+		$curl = curl_init( 'https://public-api.wordpress.com/rest/v1/me/' );
+		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Authorization: Bearer ' . $access_token ) );
+		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+		return json_decode( curl_exec( $curl ) );
 	}
 		
 	public function __construct(){}

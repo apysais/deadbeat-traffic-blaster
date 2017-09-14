@@ -49,12 +49,18 @@ class DTB_Controllers_WP extends DTB_Base{
 		$data = array();
 		if( isset($_GET['code']) ){
 			$ret = DTB_API_WP::get_instance()->auth_after_redirect();
-
+			$access_token = $ret['secret']->access_token;
+			$me = DTB_API_WP::get_instance()->me($access_token);
+			/*echo '<pre>';
+			print_r($ret);
+			print_r($me);
+			echo '</pre>';
+			exit();*/
 			$settings_array = array(
 				'client_id' => $_SESSION['client_id'],
 				'client_secret' => $_SESSION['client_secret_key'],
 				'api_token' => $ret['secret']->access_token,
-				'blog_id' => $ret['secret']->blog_id,
+				'blog_id' => $me->primary_blog,
 				'secret' => $ret['secret'],
 			);
 			$data = array(

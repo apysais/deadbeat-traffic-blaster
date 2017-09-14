@@ -146,6 +146,11 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 											'blog_id' => $val_syndicate['blog_id'],
 										);
 										$ret = DTB_API_WP::get_instance()->post_status($cred, $content);
+										/*echo '<pre>';
+										print_r($cred);
+										print_r($ret);
+										echo '</pre>';
+										exit();*/
 										if ( is_wp_error( $ret ) ) {
 										   $result_syndicate['error'][] = $ret->get_error_message();
 										} else {
