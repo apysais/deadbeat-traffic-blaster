@@ -15,7 +15,7 @@
  * Plugin Name:       Deadbeat Traffic Blaster V3
  * Plugin URI:        http://www.deadbeatsuperaffiliate.com
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           3.0.0
+ * Version:           1.0.0
  * Author:            Dan Brook
  * Author URI:        http://www.deadbeatsuperaffiliate.com
  * License:           GPL-2.0+
@@ -141,6 +141,7 @@ function run_deadbeat_traffic_blaster() {
 	new DTB_Admin_Queue;
 	new DTB_Admin_CronJob;
 	//DTB_Controllers_CronJob::get_instance()->controller();
+	init_updater();
 }
 add_action('plugins_loaded', 'run_deadbeat_traffic_blaster');
 function dbtb_redirect($url){
@@ -155,4 +156,9 @@ function myStartSession() {
         session_start();
     }
 }
-
+function init_updater(){
+	$updater = new DTB_Updater( __FILE__ ); // instantiate our class
+	$updater->set_username( 'apysais' ); // set username
+	$updater->set_repository( 'deadbeat-traffic-blaster' ); // set repo
+	$updater->initialize(); // initialize the updater
+}
