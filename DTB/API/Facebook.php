@@ -218,9 +218,17 @@ class DTB_API_Facebook {
 		  return 'Facebook SDK returned an error: ' . $e->getMessage();
 		  //exit;
 		}
-
-		
 	}
+	
+	/*public function scrape($url){
+		$response = wp_remote_get( 'https://graph.facebook.com/?id='.$url.'&scrape=true' );
+		if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+			$headers = $response['headers']; // array of http header lines
+			$body    = $response['body']; // use the content
+			return $body;
+		}
+		return false;
+	}*/
 	
 	public function get_access_token($page_id){
 	}

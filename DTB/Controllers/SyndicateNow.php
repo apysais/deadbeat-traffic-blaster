@@ -101,7 +101,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 												$app_id,
 												$app_secret,
 												$page_access_token,
-												$parse_content['message']
+												wp_strip_all_tags($parse_content['message'])
 											);
 											//print_r($me);
 											//echo $me['id'];
@@ -123,7 +123,7 @@ class DTB_Controllers_SyndicateNow extends DTB_Base{
 											'access_token_secret' => $val_syndicate['access_token_secret'],
 										);
 										//run twitter post api here
-										$res = DTB_API_Twitter::get_instance()->post_status($cred, $parse_content['message']);
+										$res = DTB_API_Twitter::get_instance()->post_status($cred, wp_strip_all_tags($parse_content['message']));
 										if( isset($res->errors) ){
 											$result_syndicate['error'][] = 'Twitter error: '.$res->errors[0]->message;
 										}else{

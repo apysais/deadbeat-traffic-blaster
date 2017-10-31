@@ -46,8 +46,8 @@ class DTB_Admin_Post {
 					$posts_array[] = array(
 						'id' => $val->ID,
 						'title' => $val->post_title,
-						'content' => wp_strip_all_tags($val->post_content),
-						'content_fifty' => substr(wp_strip_all_tags($val->post_content),0,50) . '...',
+						'content' => $val->post_content,
+						'content_fifty' => substr($val->post_content,0,50) . '...',
 						'url' => get_permalink($val->ID),
 					);
 				}

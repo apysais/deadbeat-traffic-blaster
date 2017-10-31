@@ -36,7 +36,9 @@ class DTB_API_WP {
 	public function oauth_authorize($creds = array()){
 		$wpcc_state = md5( mt_rand() );
 		$_SESSION[ 'wpcc_state' ] = $wpcc_state;
-		 
+		$_SESSION['client_id'] = $creds['client_id'];
+		$_SESSION['redirect_url'] = $creds['redirect_url'];
+		$_SESSION['client_secret_key'] = $creds['client_secret']; 
 		$url_to = 'https://public-api.wordpress.com/oauth2/authorize' . '?' . http_build_query( array(
 			'response_type' => 'code',
 			'client_id'     => $creds['client_id'],

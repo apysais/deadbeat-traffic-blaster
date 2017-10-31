@@ -91,7 +91,7 @@ class DTB_Controllers_Facebook extends DTB_Base{
 		}
 	}
 	
-	public function fb_me($account_id){
+	/*public function fb_me($account_id){
 		$cred = DTB_Admin_Facebook::get_instance()->get_credentials(18);
 		$me = DTB_API_Facebook::get_instance()->me($cred['app_id'], $cred['app_secret'], $cred['fb_access_token']);
 		print_r($me);
@@ -116,7 +116,7 @@ class DTB_Controllers_Facebook extends DTB_Base{
 			$cred['fb_access_token']
 		);
 		print_r($me);
-	}
+	}*/
 	
 	public function syndicate_html(){
 		$fb = DTB_Admin_AccountDB::get_instance()->get_by_service('facebook');
@@ -124,6 +124,17 @@ class DTB_Controllers_Facebook extends DTB_Base{
 		DTB_View::get_instance()->admin_partials('partials/syndicate-now/fb.php', $data);
 	}
 	
+	public function scrape($url){
+		$creds = DTB_Admin_AccountDB::get_instance()->get_by_service('facebook');
+		if( $creds ){
+			$fb_cred = unserialize($creds[0]->settings);
+			$ret = DTB_API_Facebook::get_instance()->scrape('http://wp.dev/2017/10/31/try/');
+			echo '<pre>';
+			print_r($ret);
+			//print_r(unserialize($creds[0]->settings));
+			echo '</pre>';
+		}
+	}
 		
 	/**
 	 * Controller
