@@ -4,7 +4,7 @@ Donate link: http://www.deadbeatsuperaffiliate.com
 Tags: Social Media API
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,9 @@ e.g.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.2 =
+* update tumblr and wordpress api to add image in content
 
 = 1.0.1 =
 * Added auto update in git
